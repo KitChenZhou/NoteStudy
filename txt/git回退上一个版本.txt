@@ -1,0 +1,216 @@
+回退到上一个版本
+gitk
+git reset --hard fb80272
+git pull 
+
+回退某个目录或文件
+git status
+git checkout + 目录或者文件名
+
+git commit --amend 修改提交的记录  Ctrl +ｏ　Enter
+
+171117
+
+如何在ubuntu中安装中文输入法
+	1、在桌面右上角设置图标中找到“System Setting”，双击打开。
+	2、在打开的窗口里找到“Language Support”，双击打开。
+    3、可能打开会说没有安装“Language Support”，这时只需要授权安装即可，之后会出现这个界面。
+	4、安装完成之后，选择“Install/Remove Languages”，在弹出的窗口选择“Chinese simplified”，点击“Apply Changes”即可。
+	5、安装IBus框架，在终端输入以下命令：sudo apt-get install ibus ibus-clutter ibus-gtk ibus-gtk3 ibus-qt4
+	6、启动IBus框架，在终端输入命令：im-switch -s ibus。
+	7、安装拼音引擎，在终端输入命令：sudo apt-get install ibus-pinyin，即可安装拼音。
+	8、设置IBus框架，在终端输入命令：ibus-setup，在出现的窗口选择Input Method，之后选择拼音输入法即可。
+	
+	
+判断输入是否存在表情符号：
+	 private boolean containsEmoji(String str) {
+        int len = str.length();
+        for (int i = 0; i < len; i++) {
+            if (isEmojiCharacter(str.charAt(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isEmojiCharacter(char codePoint) {
+        return !((codePoint == 0x0) ||
+                (codePoint == 0x9) ||
+                (codePoint == 0xA) ||
+                (codePoint == 0xD) ||
+                ((codePoint >= 0x20) && (codePoint <= 0xD7FF)) ||
+                ((codePoint >= 0xE000) && (codePoint <= 0xFFFD)) ||
+                ((codePoint >= 0x10000) && (codePoint <= 0x10FFFF)));
+    }
+
+MAUI
+
+信息共享 
+*#06#          显示IMEI号
+*#*#610000#*#* 设备信息
+*#*#620000#*#* 进入Root
+*#29826633#    显示内部版本（与*#76389273#相同）
+*#18375#       查询外部版本号(Setting->About)
+*#*#664#*#*    MMI Test
+
+*MTK平台
+1、进入工程模式： 
+
+*#*#13646633#*#* 
+
+
+2、查询外部版本号： 
+
+*#166*# 
+
+
+3、查询内部版本号及SN号： 
+
+*#29826633# 
+
+M4客户 *#software# 查询内部版本号
+
+4、SDM 450 查询内部版本号
+*#*#76389273#*#*
+
+
+
+中文（中国）	values-zh-rCN	阿拉伯文（埃及）	values-ar-rEG	希腊文			values-el-rGR	意大利文（瑞士）	values-it-rCH
+中文（台湾）	values-zh-rTW	阿拉伯文（以色列）	values-ar-rIL	法文（比利时）	values-fr-rBE	意大利文（意大利）	values-it-rIT
+中文（香港）	values-zh-rHK	保加利亚文			values-bg-rBG	法文（加拿大）	values-fr-rCA	韩文				values-ko-rKR
+英语（美国）	values-en-rUS	加泰罗尼亚文		values-ca-rES	法文（瑞士）	values-fr-rCH	立陶宛文			valueslt-rLT
+英语（英国）	values-en-rGB	捷克文				values-cs-rCZ	法文（法国）	values-fr-rFR	拉脱维亚文			values-lv-rLV
+英文（澳大利亚）values-en-rAU	丹麦文				values-da-rDK	芬兰文（芬兰）	values-fi-rFI	挪威博克马尔文		values-nb-rNO
+英文（加拿大）	values-en-rCA	德文（奥地利）		values-de-rAT	希伯来文		values-iw-rIL	荷兰文(比利时)		values-nl-BE
+英文（爱尔兰）	values-en-rIE	德文（瑞士）		values-de-rCH	印地文			values-hi-rIN	荷兰文（荷兰）		values-nl-rNL
+英文（印度）	values-en-rIN	德文（德国）		values-de-rDE	克罗里亚文		values-hr-rHR	波兰文				values-pl-rPL
+英文（新西兰）	values-en-rNZ	德文（列支敦士登）	values-de-rLI	匈牙利文		values-hu-rHU	葡萄牙文（巴西）	values-pt-rBR
+英文（新加坡）	values-en-rSG	西班牙文（西班牙）	values-es-rES	印度尼西亚文	values-in-rID	葡萄牙文（葡萄牙）	values-pt-rPT
+英文（南非）	values-en-rZA	西班牙文（美国）	values-es-rUS	日文			values-ja-rJP	罗马尼亚文			values-ro-rRO
+俄文			values-ru-rRU	斯洛伐克文			values-sk-rSK	斯洛文尼亚文	values-sl-rSI	塞尔维亚文			values-sr-rRS
+瑞典文			values-sv-rSE	泰文				values-th-rTH	塔加洛语		values-tl-rPH	土耳其文			values--r-rTR
+乌克兰文		values-uk-rUA	越南文				values-vi-rVN	 	
+
+
+// ckt add by wei for bug53035 2017-06-19 start
+// ckt add by wei for bug53035 2017-06-19 end 
+
+adb root
+adb remount
+adb shell rm /system/framework/arm/boot.oat
+adb shell rm /system/framework/arm/boot.art 
+adb shell rm /system/framework/arm64/boot.oat
+adb shell rm /system/framework/arm64/boot.art 
+adb push telephony-common.jar /system/framework/
+adb reboot
+pause
+
+
+cherry-pick
+切换到需要修改的分支
+gitk 已修改的分支  
+右键已修改的模块 cherry-pick	 	
+
+AndroidStudio 快捷键整理分享：
+
+Alt + insert 		生成构造器Getting/setting等
+Ctrl + Alt + T      把代码包在一块内 如：try/catch
+Alt + up/down		在方法间快速移动
+Ctrl + Alt +Ｖ　　　引入变量　如：吧括号内的SQL赋成一个变量
+Ctrl + Q			显示参数信息
+Ctrl + Ｗ			可以选择单词继而语句继而行 函数
+Ctrl + F12			显示当前文件结构
+Ctrl + E 			最近打开的文件
+
+
+git clean -df 清除
+
+ftp://10.240.3.16/APP-OKR/Tel/2017-Q4/ 
+
+cts测试
+4. run cts -m [class_name] -t [method_name] ----单项测试
+5. run cts -m [class_name] ----单个class测试 
+
+Java 错误：找不到或无法加载主类
+解决办法:
++.删除包名  或者 
++.在code 下创建一个与包名相同的文件结构(H:\code\com\example\Hello2.java)
+  编译:H:\code>javac com/example/Hello2.java
+  运行:H:\code>java com.example.Hello2
+  
+QFIL打开闪一下命令提示符就没反应
+rm C:\Users\D22400\AppData\Roaming\Qualcomm 
+
+																LOG
+
+抓kernel log
+adb shell cat proc/kmsg > kernel.txt
+
+抓meminfo log
+adb shell cat /proc/meminfo > meminfo.log 
+ 
+抓取snoop log
+To enable BTsnoop logs, please set property below:
+(ADB root shell) # setprop persist.bluetooth.btsnoopenable true
+log地址：
+(ADB root shell) # setprop persist.bluetooth.btsnooppath "/sdcard/btsnoop_hci.cfa"
+During your test, if there’s BT ON/OFF operation, it’ll save the previous BTsnoop with suffix “.last” and create a new one to save logs.
+手机会有.last和.cfa文件
+
+Android O 抓取snoop log
+Procedure: 
+
+1. go to /etc/bluetooth floder in devive 
+2. pull the bt_stack.conf file 
+3. make trace level 6 like (TRC_*** = 6) 
+4.push the file to same folder. 
+5. go to /data/misc/bluetooth/logs folder in device 
+6. delete the all hci.log file and .cfa file 
+7. then BT Turn OFF and TURN On 
+6. run the test case 
+7. pull the all .log and .cfa logs and share 
+
+
+
+
+adb reboot bootloader
+fastboot oem ckt-unlock
+fastboot flash system path
+
+
+mToolBar.setNavigationIcon(R.drawable.ic_arrow_back_24dp);
+actionBar.setHomeAsUpIndicator(R.drawable.back);
+
+IFI直连名称默认显示：
+WifiP2pServiceImpl 
+
+adb 录屏
+adb shell screenrecord /sdcard/test.mp4
+adb 截屏
+adb shell screencap -p /sdcard/screen.png
+
+android:autoLink="email|phone|web"（ALL）
+android:textColorLink="@color/white" 设置超链接字体颜色
+
+
+2，修改蓝牙默认名称
+修改位置：Android/device/qcom/common/bdroid_buildcfg.h
+
+修改内容：
+
+#define BTM_DEF_LOCAL_NAME   "btName..."  
+
+蓝牙重命名涉及到的是BluetootManagerService的一个方法
+
+storeNameAndAddress(String name, String address) {  
+
+用来存储重命名后的蓝牙名字，在进行开关机操作后蓝牙名字是通过该service中的
+[java] view plain copy
+loadStoredNameAndAddress()  
+
+
+
+Framework同下层打交到的方式就是jni，同上层打交到的方式就是抽象出各种java接口，在开发app的时候，import的各种android.* 就是各位在查文档时候的东东了。
+
+	
+

@@ -1,0 +1,232 @@
+Android手机系统adb常用的命令：
+安装软件：
+	adb install apk文件名称.apk路径
+
+重新安装该软件
+	adb install -r	apk文件名称.apk路径
+
+卸载apk软件
+	adb uninstall apk文件名称.apk路径
+	
+查看手机上的运行日志
+	adb logcat
+
+查看手机是否连接以及连接几台手机
+	adb devices
+	
+A为手机路径，B为电脑路径 意思为：把文件从手机中复制到电脑上
+	adb pull  A B 
+	
+A为手机路径，B为电脑路径 意思为：把文件从电脑中复制到手机上
+	adb push  B A 
+	
+进入手机的超级终端Terminal
+	adb shell
+	
+重新挂载文件系统
+	adb remount
+	
+重启手机
+	adb reboot
+
+重启到Recovery界面
+	adb reboot recovery
+	
+重启到bootloader界面
+	adb reboot bootloader
+	
+进行adb运行环境
+	adb shell
+
+设置超级用户模式
+	su
+	
+映射出目录
+	mount -o remount，rw -t yaffs2 /dev/block/mtdblock3 /system
+	
+退出su
+　　exit
+
+退出shell准备接受下一个adb命令
+　　exit
+
+增加flash_image文件到手机上
+　　adb push flash_image.zip /system/bin/flash_image
+
+recovery先复制到卡上
+　　adb push recovery-RA-heroc-v1.6.2.img /sdcard
+
+再次进入adb环境
+　　adb shell
+
+修改文件属性
+　　chmod 0755 /system/bin/flash_image
+
+重启系统
+　　reboot
+
+
+push修改frameworks导入手机
+	adb root
+	adb remount
+	adb push path system/framework
+	adb reboot
+
+msm8939 userDebug版本	
+\\sw8help\output\msm8937_64
+
+android:roundIcon="@mipmap/ic_launcher_round"
+
+邮箱收发邮件异常处理方法
+
+Outlook pop3 设置：
+
+第一步： 启动outlook，选择"文件"-"帐户设置"-"帐户设置"-“更改”。
+
+第二步： 将收发服务器地址更改为：
+接收邮件服务器：pop.qiye.163.com
+发送邮件服务器：smtp.qiye.163.com
+
+第三步： 设置好之后选择"下一步"，测试的结果都是"已完成"的状态，表明成功，完成。
+
+
+O 版本CTS测试命令汇总
+测试前手机预制条件：
+
+  1、链接翻墙wifi, name:cktsoft02-new  password:cktsoft124   否则测试过程中会检测网络未连接浪费时间
+  2、设置灭屏时间30分钟
+  3、设置锁屏方式为none,时区设置为Los Angeles(GMT-08:00)
+  4、开发者选项勾选 Stay awake、USB debugging.
+  5、关闭屏幕旋转，关闭屏幕旋转，关闭屏幕旋转
+以上5条在测试前最好设置一遍。
+
+CTS测试命令,GTS命令更新大致列举了一下，基本跟CTS一致，相关cts字样换成gts而已：
+
+打开终端命令行<7月后有更新测试指令>
+
+   切换到android-cts路径下
+   $ cd android-cts-8.1_r5/android-cts/tools
+   通过下面的命令来进入到cts的控制台
+   $ ./cts-tradefed
+   运行cts的测试命令
+   > run cts-suite
+   > run gts-suite
+adb devices或者l d查看链接的设备号，一定要指定到自己需要测试的设备，否则公共电脑上测试会影响到别的测试设备和结果
+
+    全跑命令：
+   > run cts-suite --shard-count 2 -s D1 -s D2  --skip-preconditions --disable-reboot (“--shard-count 2 -s D1 -s D2”是指用两台手机测试一个CTS plan.)
+   单跑某一个模块
+  > run cts-suite -m <模块名>  -s <设备号>   20180701强制切换
+  > GTS : run gts-suite -m <模块名>  -s <设备号>   20180701强制切换
+   单跑某个测试项
+   >run cts-suite -m <模块名> -t <测试项名>  -s <设备号>
+   retry 自己跑的一条plan，会继续跑这个计划对应打fail或者未执行项
+   >run cts --retry  session_ID -s <设备号>   ---retry的时候还是执行run cts
+特别注意
+测试VTS & CTS_ON_GST需要刷GSI才能进行测试:
+450刷机步骤：1、1.1、2、3、4、5
+660刷机步骤：1、2、2.1、3、4、5
+A22刷机步骤：1、2、3、4、5
+
+  >1、adb reboot bootloader
+      >1.1、fastboot getvar partition-size:userdata  ---450可用 加密的userdata分区先擦除一遍，第三步不能清除掉userdata数据
+  >2、fastboot -w
+      >2.1、fastboot erase userdata    --- 660必用  此分区需要单独擦除,否则会有不必要的so库依赖关系大致刷机后停在android动画界面
+  >3、 fastboot oem unlock  \ fastboot flashing unlock  ---A22 项目如果第二步提示device lock导致第五步不能刷，可能
+     跟开发者菜单里面的OEM unlocking菜单有关，可以check一下，打开之后执行下面命令:
+      >>>adb reboot bootloader
+      >>>fastboot oem unlock  手机端用音量键选择yes，解锁设备，带重新开机后再按照步骤正常的fastboot GSI
+   
+  设备重启，再刷一遍GSI就可以了，system.img包可咨询我获取，传音跟450有区别，GSI包是根据芯片位数和版本Google安全补丁日期来决定的。
+  >4、fastboot flash system xxx\8.1_r3\system_aosp_arm64_a_img\system_aosp_arm64_a_201810505.img       
+     >A22-32位传音：fastboot flash system xxx\8.1_r3\system_aosp_arm_a\system_aosp_arm_a_201810505.img     
+  >5、fastboot reboot
+VTS测试
+运行VTS测试
+
+   打开终端命令行
+   切换到android-vts路径下
+   $ cd 8.1-vts-r3/android-vts/tools\
+   通过下面的命令来进入到vts的控制台
+   $ ./vts-tradefed
+   运行vts的测试命令
+   > run vts
+常用命令
+
+   列出所有跑测结果
+   > l r
+   列出所有检测到或已知的设备
+   > l d
+   单跑某一个模块
+   > run vts -m <模块名>  -s <设备号>
+   单跑某个测试项
+   > run vts -m <模块名> -t <测试项名> -s <设备号>
+   retry 自己跑的一条plan，会继续跑这个计划对应打fail或者未执行项
+   >run vts --retry  session_ID -s <设备号>
+   可用选项
+   > run vts -s <device_id> --logcat-on-failure --screenshot-on-failure --shard-count <shards>
+   '-s <device_id>'：可指定运行测试的设备
+   '--logcat-on-failure'：当测试失败时捕获logcat
+   '--screenshot-on-failure'：当测试失败时截取屏幕截图
+   '--shard-count <shards>'：用多个设备上同时跑测，可节省时间
+如下fail测试命令列举：
+
+  arm64-v8a KernelProcFileApiTest 
+             Test                      Result           Details 
+  KernelProcFileApiTest#setup_class     fail      Failed to launch shell driver service KernelApiTest
+run vts -m KernelProcFileApiTest -t KernelProcFileApiTest#setup_class -s <设备号>
+
+cts-on-gsi
+运行针对GSI版本的CTS(bugzailla上带GSI_CTS字样)，GSI_CTS同样需要刷Google system.img， 步骤在上面
+
+8.1运行测试命令：
+   1、下载并解压vts测试工具包
+   2、切换到android-vts的位置下：
+     $ cd android-vts
+   3、进入android-vts目录下，运行vts测试的控制台程序
+     $ ./android-vts/tools/vts-tradefed
+   4、运行 cts-on-gsi 测试
+     > run cts-on-gsi​​ -s <设备号>
+   5、运行 cts-on-gsi 某个模块
+    > run cts-on-gsi​​ -m <模块名> -s <设备号>
+   6、运行 cts-on-gsi 某个测试项
+    > run cts-on-gsi​​ -m <模块名> -t <测试项名称> -s <设备号>
+8.0版本运行gsi_cts测试命令：
+   切换到android-cts路径下
+   $ cd android-cts-8.0_r3/android-cts/tools
+   通过下面的命令来进入到cts的控制台
+   $ ./cts-tradefed
+   运行cts的测试命令
+   > run cts-reference-aosp
+VTS测试环境搭建
+Recommended system environment:
+
+ 64-bit Ubuntu Linux
+ Java 8
+ Python 2.7
+ ADB 1.0.39 https://developer.android.com/studio/releases/platform-tools.html
+ To set up a testing environment:
+ 安装 Python 开发工具包：
+   $:sudo apt-get install python-dev
+ 安装协议缓冲区工具（适用于 Python）：
+   $:sudo apt-get install python-protobuf
+   $:sudo apt-get install protobuf-compiler
+ 安装 Python 虚拟环境相关工具：
+   $:sudo apt-get install python-virtualenv
+   $:sudo apt-get install python-pip 
+
+  之前450的user版本不能跑vts,现在已经解决，主要是环境问题，在之前的基础上做如下更新：
+  ckt@ubuntu:~/work/CTS/8.1_r2_vts/android-vts/tools$ pip --version
+        pip 9.0.1 from /usr/local/lib/python2.7/dist-packages (python 2.7)
+  ckt@ubuntu:~/work/CTS/8.1_r2_vts/android-vts/tools$ virtualenv --version
+        15.1.0
+请检查自己本地环境的以上两个版本号，满足以上条件即可正常测试：
+
+ 更新命令：
+        sudo pip install --upgrade pip
+       sudo pip install virtualenv(更新不成功还请先卸载sudo pip uninstall virtualenv)
+	   
+	   
+	   
+chenxiaoting321@gmail.com    ckttest123
+

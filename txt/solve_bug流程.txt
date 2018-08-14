@@ -1,0 +1,105 @@
+1.下载仓库代码：gerrit + clone + 编译
+	source build/envsetup
+	lunch(FEEL:39/MAUI:29)
+	make -j8
+2.配置账户：.git/config
+	[user]
+		name = lei.chen
+		email = lei.chen@ck-telecom.com
+	[core]
+		ui = true
+		repositoryformatversion = 0 
+		filemode = true
+		bare = false
+		logallrefupdates = true
+		editor = vim
+		quotepath = false
+
+3.下载hooks(进入.git所在目录执行命令)
+	scp -p -P 29418 lei.chen@10.240.2.188:hooks/commit-msg .git/hooks/
+	
+	
+4.切换到master分支 + git pull
+
+5.新建临时分支：master_test（在临时分支提交，再cherrypick）
+
+6.修改代码
+
+7.编译模块
+	source build/envsetup.sh
+	lunch(FEEL:39/MAUI:29)
+	mmm/mmma + 路径
+	
+8.验证修改，APK路径：
+	MAUI：LA.UM.5.6\LINUX\android\out\target\product\msm8937_64\system\pri-app
+	FEEL：out\target\product\feel01a\system\pri-app
+	adb install -r + APK 
+9.提交代码
+	git branch
+	git status (git diff)
+	//添加忽略文件(echo *.sup >> .gitignore)
+	git add + file
+	git ci "提交模板"
+		[bug 56977] [MAUI01A-S00A] [Contacts] Enter the contacts and open the split screen,  long press Menu to cancel the split screen on the new contact interface, the screen flash about the black
+
+		【问题描述】进入联系人开启分屏，新建联系人界面长按Menu取消分屏，屏幕闪一下黑屏
+		【原因分析】重新启动Activity时加载数据有延迟并且Activity主题为黑色
+		【解决方案】将新建联系人Activity主题设置为透明
+		【修改模块】Contacts
+		【影响模块】Contacts
+		【测试建议】按照问题描述进行测试
+	git log
+	git checkout master
+	git pull --rebase
+	gitk master_test &
+	cherrypick this commit
+	git pull --rebase
+	git push origin master:refs/for/master
+	
+10.评审
+
+11.更新bugzilla状态
+
+回退到之前一个版本：
+	git reset --hard + commit Id
+
+回退文件：
+	git checkout + 路径
+	
+查看某一分支上的提交（远程）：
+	git log -3 remotes/origin/master
+	
+回退版本不删除当前修改
+975  git reset 11b3a632d5d4e49b27d13aaab77ce276d7d76ca2
+976  git pull
+977  git branch -a
+978  git reset remotes/origin/REVIVE01A-S00A_for_Transsion
+979  gitk
+980  git status
+
+将文件修改为ckt文件
+sudo chgrp ckt work/
+sudo chown ckt work/
+
+
+if (contact.existsInDatabase()) {
+                    if (!avatarDrawable.equals(mDefaultContactImage)) {
+                        view.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    }
+                    view.setBackgroundResource(R.drawable.default_sms_background);
+                }
+				
+				
+何毅敏(D22603) 2018-04-24 14:42:02
+
+大家调试问题  ，需要跟函数的调用的时候  ，可以试试这个方法
+何毅敏(D22603) 2018-04-24 14:42:05
+
+抛出异常
+import java.lang.Throwable;
+android.util.Log.d("biubiu","this="+this, new Throwable("debug")); //可能需要 import java.lang.Throwable; 对象
+
+
+> run cts-suite -m <模块名>  -s <设备号>   20180701强制切换
+  > GTS : run gts-suite -m <模块名>  -s <设备号>   20180701强制切换
+

@@ -1,0 +1,1146 @@
+
+				  
+①[Bug 56872][MAUI01A-S00A][BT]Bluetooth has paired devices click on the shared contacts
+    
+    【问题描述】蓝牙已配对设备点击共享联系人置灰
+    【原因分析】分别快速点击互联网连接和共享联系人,置灰互联网连接时也使共享联系人方框也一起置灰后没有恢复
+    【解决方案】使得共享联系人方框在点击时不置灰
+    【修改模块】BT
+    【影响模块】BT
+    【测试建议】进入对应场景按照问题描述测试
+	
+软件配置管理权限申请单
+申请人公钥：	lei.chen	是否新员工：	NO
+仓库及分支：	git clone ssh://lanlan.yang@10.240.2.41:29418/snapdragon-2016-spf-2-0_oem_ckt -b MAUI01A-S00A_ckt
+
+权限类型：	WR	审批人：	王志利
+
+
+scp -p -P 29418 lei.chen@10.240.2.41:hooks/commit-msg .git/hooks/commit-msg
+
+ac678555b3450c555aa89f296faf9edbd30917a9
+
+②[Bug 57032][MAUI01A-S00A][Setting]Click Reset Network Settings Probability does not turn off the Bluetooth and the name does not restore the default state The problem temporarily reappear.
+    
+    【问题描述】点击重置网络设置概率性不关闭蓝牙及名字不恢复默认状态问题暂为复现。
+    【原因分析】执行factoryReset时，没有恢复蓝牙默认状态
+    【解决方案】执行factoryReset时，关闭蓝牙状态
+    【修改模块】Setting
+    【影响模块】Setting
+    【测试建议】进入对应场景按照问题描述测试
+	
+	
+	
+	
+③[Bug 57731][TREND02A-S10A][Email]Edit send and receive server interface screen will be mobile phone, suggesting that e-mail to stop
+
+	【问题描述】编辑发送和接收服务器界面将手机横屏，提示电子邮件报停。
+    【原因分析】横屏的布局文件的控件未设置id
+    【解决方案】横屏的布局文件中给相应的控件设置id
+    【修改模块】Email
+    【影响模块】Email
+    【测试建议】进入对应场景按照问题描述测试
+
+http://10.240.2.188:8088/#/c/11263/
+http://10.240.2.188:8088/#/c/11706/
+
+android:id="@+id/account_username_label"
+
+	
+④[Bug 57148][TREND01A-S10A][Email]Default language, the login screen "Next" character display is not complete
+    
+    【问题描述】默认语言下，登录界面“下一步”字符显示不全
+    【原因分析】“下一步”字符字体较大
+    【解决方案】将默认的字符字体调小
+    【修改模块】Email
+    【影响模块】Email
+    【测试建议】进入对应场景按照问题描述测试
+	
+http://10.240.2.188:8088/#/c/11272/
+	onConfigurationChanged
+	
+⑤[feature][MAUI01A][Setting]Modify the default APname and add 4 random numbers
+    
+    【问题描述】修改默认的APname并增加4位随机数
+    【原因分析】修改默认的APname并增加4位随机数
+    【解决方案】将默认的APname修改成RC555L-XXXX(随机数)
+    【修改模块】Setting
+    【影响模块】Setting
+    【测试建议】进入对应场景按照问题描述测试
+	
+ frameworks/base/wifi/Java/Android/net/wifi/WifiApConfigStore.java
+ private WifiConfiguration getDefaultApConfiguration() {
+        WifiConfiguration config = new WifiConfiguration();
+        Random rand = new Random();
+        String s = "";
+        for (int i = 0; i < 4; i++){
+            int r = rand.nextInt(10);
+            s += r;
+        }
+        config.SSID = "RC555L-" + s;
+        int wifiApSecurityType = mContext.getResources().getInteger(
+                R.integer.wifi_hotspot_security_type);
+        config.allowedKeyManagement.set(wifiApSecurityType);
+        config.preSharedKey = mContext.getResources().getString(
+                R.string.def_wifi_wifihotspot_pass);
+        if (TextUtils.isEmpty(config.preSharedKey)) {
+            String randomUUID = UUID.randomUUID().toString();
+            //first 12 chars from xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
+            config.preSharedKey = randomUUID.substring(0, 8) + randomUUID.substring(9,13);
+        }
+        return config;
+    }
+	
+	
+⑥[Bug 57274][TREND01A-S10A][WiFi]WiFi hotspot opened for the first time after the drop-down status bar view, wifi hotspot icon is not highlighted
+    
+    【问题描述】首次开启wifi热点后下拉状态栏查看，wifi热点图标未高亮
+    【原因分析】WiFi热点图标未配置默认颜色
+    【解决方案】WiFi热点图标配置默认颜色
+    【修改模块】SystemUI
+    【影响模块】SystemUI
+    【测试建议】进入对应场景按照问题描述测试
+	
+http://10.240.2.188:8088/#/c/11598/
+	
+device/ckt/trend01a/overlay/frameworks/base/packages/SystemUI/res/drawable/ic_ckt_hotspot_enable.xml
+<path
+                    android:name="cross_1"
+                    android:pathData="M 4.44044494629,2.24310302734 c 0.0,0.0 35.4000396729,35.3999633789 35.4000396729,35.3999633789 "
+                    android:strokeColor="#FF953F9C"(#FFFFFFFF)
+                    android:strokeAlpha="1"
+                    android:strokeWidth="3.5"
+                    android:fillColor="#00953F9C" />(#00000000)
+					...
+					android:fillColor="#FF953F9C"(#FFFFFFFF)
+					
+					
+[Bug 57357][TREND01A-S10A][Setting]In flight mode, enter the flight mode menu and then perform the function of turning on the flight mode once
+    
+    【问题描述】飞行模式下，进入飞行模式菜单后又执行一次开启飞行模式功能
+    【原因分析】在进入飞行模式菜单时界面重新开始了一个完整的生命周期，并设置开关为TRUE
+    【解决方案】将设置飞行模式开关的代码放到添加监听器之前
+    【修改模块】Setting
+    【影响模块】Setting
+    【测试建议】进入对应场景按照问题描述测试
+	
+http://10.240.2.188:8088/#/c/11455/
+	
+packages/app/Settings/src/com/android/settings/airplane/AirplaneEnabler
+public void resume(Context context) {
+        PDebug.Start("Enabler.resume");
+        mSwitch.setChecked(isAirplaneModeOn(mContext));
+
+        if (mContext != context) {
+            mContext = context;
+        }
+        mSwitchBar.addOnSwitchChangeListener(this);
+      //  mContext.registerReceiver(mReceiver, mIntentFilter);
+        mValidListener = true;
+        PDebug.End("Enabler.resume");
+
+
+        mPhoneStateReceiver.registerIntent();
+     //   mSwitchPref.setOnPreferenceChangeListener(this);
+        mContext.getContentResolver().registerContentObserver(
+                Settings.Global.getUriFor(Settings.Global.AIRPLANE_MODE_ON), true,
+                mAirplaneModeObserver);
+    }
+	
+⑧[Bug 57455][FEEL01A-S10A][WiFi]去掉字符限定会导致修改直连名称中包含表情时会导致手机重启
+
+This reverts commit 3f104ac38113f984b15432fdf928d85d31978ddc.
+
+http://10.240.2.188:8088/#/c/11517/
+
+⑨[Bug 57445][TREND01A-S10A][Email]Download music in the email, play the music in the process of switching between vertical and horizontal, click the Search on Server button, Email stop.
+    
+    【问题描述】在电子邮件中下载音乐，播放音乐过程中横竖屏切换，返回点击Search on Server按钮，Email报停。
+    【原因分析】点击Search on Server按钮时，参数mOffset为空导致报停。
+    【解决方案】在参数mOffset之前加个判断条件
+    【修改模块】Email
+    【影响模块】Email
+    【测试建议】进入对应场景按照问题描述测试
+	
+	http://10.240.2.188:8088/#/c/11551/
+	
+	private Cursor uiFolderLoadMore(final Mailbox mailbox) {
+        if (mailbox == null) return null;
+        if (mailbox.mType == Mailbox.TYPE_SEARCH) {
+            // Ask for 10 more messages
+            //
+            if (mSearchParams != null) {
+                mSearchParams.mOffset += SEARCH_MORE_INCREMENT;
+            }
+            runSearchQuery(getContext(), mailbox.mAccountKey, mailbox.mId);
+        } else {
+            uiFolderRefresh(mailbox, VISIBLE_LIMIT_INCREMENT);
+        }
+        return null;
+    }
+	
+[Bug 57486][FEEL01A-S10A][Email]The default language (Spanish) to switch to English, enter Email, enter the account, click Next, the interface prompts for the password is displayed at Spanish.
+    
+    【问题描述】把默认语言（西语）切换成英语，进入Email，输入账号，点击下一步，界面中提示输入密码处显示为西语。
+    【原因分析】英语（美国）的配置文件中提示输入密码的string为西语
+    【解决方案】修改英语（美国）的配置文件中提示输入密码的string为英语
+    【修改模块】Email
+    【影响模块】Email
+    【测试建议】进入对应场景按照问题描述测试
+	
+	http://10.240.2.188:8088/#/c/11569/
+	
+
+[bug 57573][TREND02A-S10A][Contacts] Horizontal screen into the contact, vertical screen to exit the contact, re-enter the contact part of the screen is displayed as black
+    
+    【问题描述】横屏进入联系人，竖屏退出联系人，再次进入联系人时屏幕部分显示为黑
+    【原因分析】重新启动Activity时加载数据有延迟
+    【解决方案】禁用应用预启动画面
+    【修改模块】Contacts
+    【影响模块】Contacts
+    【测试建议】按照问题描述进行测试
+	
+http://10.240.2.188:8088/#/c/11646/	
+
+	
+[Bug 57665][TREND01A-S10A][Contacts] Default Spanish, click on the three-point icon in the upper right corner of all the contacts, select link, the pop-up prompt for English
+    
+    【问题描述】默认西语，全选联系人后点击右上角的三点图标，选择link，弹出的提示语为英语 
+    【原因分析】未配置西语的资源文件
+    【解决方案】配置西语的资源文件
+    【修改模块】Contacts
+    【影响模块】Contacts
+    【测试建议】按照问题描述进行测试
+
+http://10.240.2.188:8088/#/c/11659/
+	
+	
+[Bug 57681][TREND01A-S10A][FEEL01A-S00A][Email] New E-mail - Horizontal / Vertical - Add Accessories,Rotate the screen,the interface displays abnormal
+    
+    【问题描述】新建电子邮件-横屏/竖屏-添加附件，旋转屏幕，界面显示异常
+    【原因分析】旋转屏幕不重建layout,注：bug 51285对比N9搜索框旋转屏幕搜索内容会消失
+    【解决方案】旋转屏幕重建layout
+    【修改模块】DocumentUI
+    【影响模块】DocumentUI
+    【测试建议】按照问题描述进行测试
+	
+http://10.240.2.188:8088/#/c/11703/
+
+[Bug 57869][TREND02A-S10A][BT]After connecting the Bluetooth keyboard, click the WIN key on the Bluetooth keyboard. System UI has stopped
+    
+    【问题描述】连接蓝牙键盘后点击蓝牙键盘上的WIN键提示:system UI has stopped
+    【原因分析】在使用mView对象时未初始化
+    【解决方案】在使用mView对象之前对其初始化
+    【修改模块】SystemUI
+    【影响模块】SystemUI
+    【测试建议】按照问题描述进行测试
+	
+http://10.240.2.188:8088/#/c/11782/
+	
+[Bug 57871][TREND01A-S10A][BT]After connecting the Bluetooth keyboard, click the WIN key on the Bluetooth keyboard. System UI has stopped
+    
+    【问题描述】连接蓝牙键盘后点击蓝牙键盘上的WIN键提示:system UI has stopped
+    【原因分析】在使用mView对象时未初始化
+    【解决方案】在使用mView对象之前对其初始化
+    【修改模块】SystemUI
+    【影响模块】SystemUI
+    【测试建议】按照问题描述进行测试
+
+http://10.240.2.188:8088/#/c/11646/	
+
+
+[feature][applications][AutoPhone]add autophone source code
+
+    【需求描述】合入AutoPhone
+    【原因分析】合入AutoPhone
+    【解决方案】TestAuxiliaryTool中加入AutoPhone
+    【修改模块】AutoPhone
+    【影响模块】TestAuxiliaryTool
+    【测试建议】测试整个TestAuxiliaryTool应用
+	
+[feature][applications][AutoPhone]Modify the autophone code, add dial permissions, modify strings.xml file
+
+    【需求描述】修改autophone代码，加入拨号权限，修改strings.xml文件
+    【原因分析】修改autophone代码，加入拨号权限，修改strings.xml文件
+    【解决方案】修改autophone代码，加入拨号权限，修改strings.xml文件
+    【修改模块】AutoPhone
+    【影响模块】TestAuxiliaryTool
+    【测试建议】测试整个TestAuxiliaryTool应用
+	
+	https://github.com/OnlyYouMyLove/PullToLoadData-RecyclerView.git
+	
+[feature][applications][SwitchTest]add BluetoothTest and WifiTest source code
+
+    【需求描述】合入BluetoothTest和WifiTest
+    【原因分析】增加BluetoothTest和WifiTest
+    【解决方案】在SwitchTest中加入BluetoothTest和WifiTest
+    【修改模块】SwitchTest
+    【影响模块】SwitchTest
+    【测试建议】测试SwitchTest应用
+	
+[feature][applications][SwitchTest]After the test is completed toast toast prompt
+
+    【需求描述】测试完成后弹出Toast提示
+    【原因分析】测试完成后未加上Toast提示
+    【解决方案】测试完成后加上Toast提示
+    【修改模块】SwitchTest
+    【影响模块】SwitchTest
+    【测试建议】测试SwitchTest应用
+	
+public static int lastRemaining(int n, int m){
+        if(n < 1 || m < 1){
+            return -1;
+        }
+        int last = 0;
+        for(int i = 2; i <= n; i++){
+            last = (last + m) % i;
+        }
+        return last;
+    }
+	
+
+[feature][applications][SwitchTest]Add Camera Test function and set default SwitchTest test times to 1000 times
+
+    【需求描述】添加Camera Test功能及设置默认SwitchTest测试次数为1000次
+    【原因分析】添加Camera Test功能及设置默认SwitchTest测试次数为1000次
+    【解决方案】添加Camera Test功能及设置默认SwitchTest测试次数为1000次
+    【修改模块】SwitchTest
+    【影响模块】SwitchTest
+    【测试建议】测试SwitchTest应用
+	
+[feature][applications][SwitchTest]Optimize Toast display
+
+    【需求描述】优化Toast显示
+    【原因分析】连续弹出两个Toast有延迟
+    【解决方案】设置toast为static
+    【修改模块】SwitchTest
+    【影响模块】SwitchTest
+    【测试建议】测试SwitchTest应用
+	
+Bug 58121 - [TREND02A-S10A][FEEL01A-S00A][WIFI]修改便携式WiFi热点的最大连接数，选择取消后查看，最大连接数变为修改但未保存的个数 
+
+[feature][TestAuxiliaryTool][autophone/switchtest]update TestAuxiliaryToolDesignDocument for autophone and switchtest
+    
+        【需求描述】更新TestAuxiliaryToolDesignDocument.docx文档，添加autophone和switchtest
+        【原因分析】在TestAuxiliaryToolDesignDocument中添加autophone和switchtest设计文档
+        【解决方案】添加SensorTest的autophone和switchtest设计文档
+        【修改模块】TestAuxiliaryToolDesignDocument
+        【影响模块】TestAuxiliaryToolDesignDocument
+        【测试建议】无
+git mergetool TestAuxiliaryTool/TestAuxiliaryToolDesignDocument.docx(gitstash后找不到原来的文件) 
+
+[feature][TestAuxiliaryTool][autophone][switchtest]update style for autophone and switchtest
+    
+        【需求描述】更新按钮样式
+        【原因分析】同意按钮式样
+        【解决方案】新建一个ButtonStyleForAutoPhone的style
+        【修改模块】SensorTest
+        【影响模块】SensorTest
+        【测试建议】查看autophone和switchtest界面
+		
+[Bug 58288][ELEGANCE01A-S10A][Contacts] Default Spanish, click on the three-point icon in the upper right corner of all the contacts, select link, the pop-up prompt for English
+    
+    【问题描述】默认西语，全选联系人后点击右上角的三点图标，选择link，弹出的提示语为英语 
+    【原因分析】未配置西语的资源文件
+    【解决方案】配置西语的资源文件
+    【修改模块】Contacts
+    【影响模块】Contacts
+    【测试建议】按照问题描述进行测试
+	
+	http://10.240.2.188:8088/#/c/12140/
+
+	
+[feature][TestAuxiliaryTool][autophone/switchtest]update TestAuxiliaryToolDesignDocument for autophone
+    
+        【需求描述】修改TestAuxiliaryToolDesignDocument.docx文档
+        【原因分析】修改TestAuxiliaryToolDesignDocument.docx文档
+        【解决方案】修改TestAuxiliaryToolDesignDocument.docx文档
+        【修改模块】TestAuxiliaryToolDesignDocument
+        【影响模块】TestAuxiliaryToolDesignDocument
+        【测试建议】无
+		
+		
+[Bug 58636][TREND01A-S10A][Contacts]Select 5 contacts, click the menu bar, select the merge, the prompt box characters are displayed in English
+
+        【问题描述】默认语言下，登陆Google账号，长按勾选Google账号下的5个联系人，点击菜单栏，选择合并，提示框中的字符显示为英语
+        【原因分析】未配置西语的资源文件
+        【解决方案】配置西语的资源文件
+        【修改模块】Contacts
+        【影响模块】Contacts
+        【测试建议】按照问题描述进行测试
+		
+    <!-- add by chenlei for bug58636 on 2018-01-16-->
+    <string name="batch_merge_confirmation_warning">Los contactos seleccionados se fusionarán en un único contacto. ¡Debido a los números grandes, le costará mucho tiempo!</string>
+	
+	
+[Bug 59045][FEEL01A-S10A][网络和SIM设置]Pull down the notification bar, long press the flight mode, there is no direct access to the flight mode setting interface, but rather select the box
+
+        【问题描述】下拉通知栏，长按飞行模式，没有直接进入飞行模式设置界面，而是出现选择弹框
+        【原因分析】移动飞行模式菜单有intent action android.settings.AIRPLANE_MODE_SETTINGS
+        【解决方案】在AndroidManifest.xml里删除该intent action
+        【修改模块】packages/app/Setting
+        【影响模块】packages/app/Setting
+        【测试建议】按照问题描述进行测试
+	
+	
+	
+[Bug 59045][FEEL01A-S10A][网络和SIM设置]Pull down the notification bar, long press the flight mode, there is no direct access to the flight mode setting interface, but rather select the box
+
+		【问题描述】下拉通知栏，长按飞行模式，没有直接进入飞行模式设置界面，而是出现选择弹框
+        【原因分析】移动飞行模式菜单有intent action android.settings.AIRPLANE_MODE_SETTINGS
+        【解决方案】在AndroidManifest.xml里删除该intent action
+        【修改模块】packages/app/Setting
+        【影响模块】packages/app/Setting
+        【测试建议】按照问题描述进行测试
+	
+
+
+[feature][REVIVE01A][vendor]Import GPRS parameters list---Refer to the newest <itel APN Setting> Operator project shall prevail as operator APN parameters
+
+    【需求描述】更新APN参数表格和运营名称显示----以最新的《itel APN Setting》为准运营商项目，以运营商的APN参数为准
+    【原因分析】更新APN参数
+    【解决方案】更新APN参数
+    【修改模块】vendor
+    【影响模块】vendor
+    【测试建议】对比APN参数
+	
+	http://10.240.2.232:8088/#/c/408/
+	
+[feature][REVIVE01A][Contacts]The contact interface displays the total number of contacts
+
+    【需求描述】联系人界面，需显示联系人总数
+    【原因分析】NA
+    【解决方案】在联系人下面添加TextView显示联系人总数
+    【修改模块】Contacts
+    【影响模块】Contacts
+    【测试建议】查看联系人下面的TextView是否显示正确
+	
+[Bug 59712][REVIVE01A-S00A][Settings && SystemUI]All screens have cast function and related menus removed
+
+    【问题描述】所有界面去掉投射功能及相关菜单
+    【原因分析】安卓默认打开了此功能
+    【解决方案】项目定义无此功能直接去掉
+    【修改模块】Setting && SystemUI
+    【影响模块】Setting && SystemUI
+    【测试建议】进入对应场景查看是否还有此功能
+	
+[Bug 59758][REVIVE01A-S00A][Telephony && Dialer]After adding the SIP account, you can't select the call in the application's SIM management to default to the sip account.
+
+    【问题描述】添加SIP账号后，无法在设置应用中的SIM卡管理内选择通话默认为sip账号拨出
+    【原因分析】Setting未为其设置点击事件
+    【解决方案】去掉通话设置的sip选项及默认隐藏拨号盘搜索处输入@加任意字符弹出拨打sip call
+    【修改模块】Telephony && Dialer
+    【影响模块】Telephony && Dialer
+    【测试建议】进入对应场景查看是否还有此功能
+	getPreferenceScreen().removePreference(findPreference(SIP_SETTINGS_CATEGORY_PREF_KEY));
+		
+		
+[Bug 59758][REVIVE01A-S00A][Contacts]Contact Editor -> More With SIP option
+
+    【问题描述】联系人编辑->更多 有SIP选项
+    【原因分析】去掉SIP功能----优化
+    【解决方案】取消加载该选项
+    【修改模块】Contacts
+    【影响模块】Contacts
+    【测试建议】进入对应场景查看是否还有此功能
+	
+[Bug 59849][REVIVE01A-S00A][Calendar]Pull down the notification bar, click MAP in the unread calendar event, the phone prompts Calendar has stopped
+
+    【问题描述】下拉通知栏，点击未读日历事件中的MAP，手机提示Calendar has stopped 
+    【原因分析】手机自带地图不适配
+    【解决方案】在没有适配地图情况下弹出信息提醒用户下载第三方地图
+    【修改模块】Calendar
+    【影响模块】Calendar
+    【测试建议】按照问题描述进行测试
+	
+	<!--add by lei.chen for bug 59849 on 2018-03-16-->
+    <string name="no_map_remind">No map available, please install third-party map app</string>
+	
+	try {
+                        context.startActivity(geoIntent);
+                    } catch (ActivityNotFoundException anfe) {
+                        Toast.makeText(context,
+                                context.getResources().getString(R.string.no_map_remind),
+                                Toast.LENGTH_SHORT).show();
+                    }
+					
+[Bug 59978][REVIVE01A-S00A][Launcher3]Add a contact to the desktop shortcut, and repeatedly add the same contact to the desktop shortcut, which can be added repeatedly, and the desktop displays multiple shortcuts for the same contact.
+
+    【问题描述】添加联系人到桌面快捷方式，重复添加同一联系人到桌面快捷方式，可以重复添加，且桌面显示多个相同联系人快捷方式。 
+    【原因分析】添加快捷方式没有检查该联系人是否已经存在
+    【解决方案】在添加快捷方式之前检查该联系人是否已经存在
+    【修改模块】Launcher3
+    【影响模块】Launcher3
+    【测试建议】按照问题描述进行测试					
+
+					
+/**
+     * Returns true if the shortcuts already exists in the database.
+     * we identify a shortcut by its title and intent.
+     */
+    static boolean shortcutExists(Context context, String title, Intent intent) {
+        /**
+         * M: When installShortcut, Launcher add flags Intent.FLAG_ACTIVITY_NEW_TASK |
+         * Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED shortcut intent cannot match with intent saved in launcher, so create
+         * shortcut repeated.
+         * [ALPS00833799] Set FLAG_ACTIVITY_NEW_TASK and FLAG_ACTIVITY_RESET_TASK_IF_NEEDED for shortcut
+         * if action equals ACTION_MAIN and categroy contains CATEGORY_LAUNCHER.@{
+         */
+        if (intent.getAction() != null &&
+                intent.getCategories() != null &&
+                intent.getAction().equals(Intent.ACTION_MAIN) &&
+                intent.getCategories().contains(Intent.CATEGORY_LAUNCHER)) {
+            intent.addFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK |
+                            Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        }
+        /**@}**/
+        boolean result = false;
+        if (title != null && intent != null) {
+            final ContentResolver cr = context.getContentResolver();
+            Cursor c = cr.query(LauncherSettings.Favorites.CONTENT_URI,
+                    new String[]{"title", "intent"}, "title=? and intent=?",
+                    new String[]{title, intent.toUri(0)}, null);
+            try {
+                result = c.moveToFirst();
+            } finally {
+                c.close();
+            }
+        }
+        return result;
+    }
+
+	[feature][REVIVE01A][Contacts]The contact interface displays the total number of contacts
+
+    【需求描述】联系人界面选择某分组联系人时，联系人总数显示异常
+    【原因分析】优化联系人总数显示
+    【解决方案】默认显示联系人总数状态Gone
+    【修改模块】Contacts
+    【影响模块】Contacts
+    【测试建议】查看联系人下面的TextView是否显示正确
+	
+	contactCount = data.getCount();
+        if (contactCount == 0) {
+            mContactCount.setVisibility(View.GONE);
+        } else if (contactCount == 1) {
+            mContactCount.setVisibility(View.VISIBLE);
+            mContactCount.setText(getContext().getResources().getString(R.string.contact_count,
+                    contactCount));
+        } else {
+            mContactCount.setVisibility(View.VISIBLE);
+            mContactCount.setText(getContext().getResources().getString(R.string.contacts_count,
+                    contactCount));
+        }
+
+[Bug 60095][REVIVE01A-S00A][Telephony]See all call accounts are empty, can not add any new account, it is recommended to remove the call account menu
+
+    【问题描述】查看所有通话账户为空内容，无法添加任何新账户，建议去掉通话账户菜单 
+    【原因分析】通话账户可以添加第三方应用
+    【解决方案】不去掉通话账户菜单
+    【修改模块】Telephony
+    【影响模块】Telephony
+    【测试建议】按照问题描述进行测试
+	
+
+[Bug 59978][REVIVE01A-S00A][Contacts]Add a contact to the desktop shortcut, and repeatedly add the same contact to the desktop shortcut, which can be added repeatedly, and the desktop displays multiple shortcuts for the same contact.
+
+    【问题描述】添加联系人到桌面快捷方式，重复添加同一联系人到桌面快捷方式，可以重复添加，且桌面显示多个相同联系人快捷方式。 
+    【原因分析】增加Toast 提示用户
+    【解决方案】增加Toast 提示用户
+    【修改模块】Launcher3
+    【影响模块】Launcher3
+    【测试建议】按照问题描述进行测试
+
+<!--add by lei.chen for bug 59978 on 2018-3-22-->
+    <string name="shortcut_exists">This shortcut already exists on the desktop</string>
+	
+	
+	
+	
+
+[feature][REVIVE01A][Mms]update Mms UI 
+
+	【问题描述】更新短信UI
+	【原因分析】按照客户需求 更新短信UI
+	【解决方案】按照客户需求 更新短信UI
+	【修改模块】Mms
+	【影响模块】Mms
+	【测试建议】按照问题描述验证
+	
+	
+[feature][REVIVE01A-S00A][Mms]Modify the Mms style
+    
+    【问题描述】按照客户要求修改Mms风格
+    【原因分析】按照客户要求修改Mms风格
+    【解决方案】添加代码跟资源
+    【修改模块】Mms
+    【影响模块】Mms
+    【测试建议】以客户测试为准
+	
+[feature][REVIVE01A][Mms]Unified session interface theme 
+
+	【问题描述】统一会话界面主题
+	【原因分析】按照客户需求 更新短信UI
+	【解决方案】按照客户需求 更新短信UI
+	【修改模块】Mms
+	【影响模块】Mms
+	【测试建议】按照问题描述验证
+	
+	
+[feature][REVIVE01A][Dialer & Contacts]update Mms call & Contacts 
+
+	【问题描述】更新短信通话联系人
+	【原因分析】按照客户需求 更新通话联系人UI
+	【解决方案】按照客户需求 更新通话联系人UI
+	【修改模块】Dialer & Contacts
+	【影响模块】Dialer & Contacts
+	【测试建议】按照问题描述验证
+	
+	
+[Bug 60428][REVIVE01A-S00A][语音信箱]In the horizontal screen interface, click the voicemail contact interface to move the screen vertically.
+
+    【问题描述】横屏界面下点击语音信箱联系人界面将手机竖屏，界面显示异常
+    【原因分析】未刷新Dialog界面
+    【解决方案】参考对比机 将此界面设置为不可旋转
+    【修改模块】Telephony
+    【影响模块】Telephony
+    【测试建议】按照问题描述进行测试
+	
+	
+【蓝牙】点击图片，选择蓝牙分享，在蓝牙分享界面，显示竖线
+
+[Bug 81][REVIVE01A-S00A][wifi]在wifi设置中添加802.1XEAP的热点，点击保存，弹出：Settings has stopped
+
+    【问题描述】在wifi设置中添加802.1XEAP的热点，点击保存，弹出：Settings has stopped
+    【原因分析】mAccessPoint为空
+    【解决方案】增加判断条件
+    【修改模块】Setting
+    【影响模块】Setting
+    【测试建议】按照问题描述进行测试
+
+[feature][REVIVE01A][Mms]Unified notification and contact avatar size
+    
+    	【问题描述】统一通知和联系人头像大小
+    	【原因分析】按照客户需求 更改通知头像大小
+    	【解决方案】按照客户需求 更改通知头像大小
+    	【修改模块】Mms
+    	【影响模块】Mms
+    	【测试建议】按照问题描述验证
+		
+[feature][REVIVE01A][Mms]Change font color and icon
+    
+    	【问题描述】更换字体颜色及图标
+    	【原因分析】按照客户需求 更换字体颜色及图标
+    	【解决方案】按照客户需求 更换字体颜色及图标
+    	【修改模块】Mms
+    	【影响模块】Mms
+    	【测试建议】按照问题描述验证
+
+
+[feature][REVIVE01A][Mms]Update SMS time font color
+    
+    	【问题描述】更新短信时间字体颜色
+    	【原因分析】按照客户需求 更换字体颜色
+    	【解决方案】按照客户需求 更换字体颜色
+    	【修改模块】Mms
+    	【影响模块】Mms
+    	【测试建议】按照问题描述验证
+		
+[feature][REVIVE01A][Mms]Avatar inconsistency when searching for group contacts
+    
+    	【问题描述】搜索到群组联系人时头像不一致
+    	【原因分析】按照客户需求 统一群组联系人的头像
+    	【解决方案】按照客户需求 统一群组联系人的头像
+    	【修改模块】Mms
+    	【影响模块】Mms
+    	【测试建议】按照问题描述验证
+		
+
+		
+[feature][REVIVE01A][Mms]Avatar inconsistency in Mms list group contacts
+    
+    	【问题描述】Mms短信列表群组联系人时头像不一致
+    	【原因分析】按照客户需求 统一群组联系人和个人联系人的头像
+    	【解决方案】按照客户需求 统一群组联系人和个人联系人的头像
+    	【修改模块】Mms
+    	【影响模块】Mms
+    	【测试建议】按照问题描述验证
+		
+[feature][REVIVE01A][Mms]SMS contact note and number color is not pure
+    
+    	【问题描述】短信联系人备注及号码颜色不纯
+    	【原因分析】客户需求
+    	【解决方案】更改ToolBar颜色
+    	【修改模块】Mms
+    	【影响模块】Mms
+    	【测试建议】按照问题描述验证
+		
+[Bug 165][REVIVE01A-S00A][蓝牙耳机]Bluetooth Headset 4.0 is connected, the color of the notification bar Bluetooth icon is unchanged
+
+    【问题描述】连接蓝牙耳机4.0，通知栏蓝牙图标颜色无变化
+    【原因分析】蓝牙图标增加了电量显示导致图标颜色无变化
+    【解决方案】去掉蓝牙图标电量显示
+    【修改模块】SystemUI
+    【影响模块】SystemUI
+    【测试建议】按照问题描述进行测试
+	
+	
+[Bug 59855][REVIVE01A-S00A][Bluetooth]The tester prompts Bluetooth to stop running when transmitting multiple pictures to the auxiliary machine
+
+    【问题描述】测试机向辅助机蓝牙传输多个图片时提示蓝牙停止运行
+    【原因分析】系统OUT_OF_MEMERY导致蓝牙进程被kill掉
+    【解决方案】不让系统kill掉蓝牙进程
+    【修改模块】Bluetooth
+    【影响模块】Bluetooth
+    【测试建议】按照问题描述进行测试
+	
+[Bug 61162][REVIVE01A-S00A][Settings]Enter Settings - Connect Devices, the interface menu displays the Car menu, which is practically useless.
+
+    【问题描述】进入设置-连接设备，界面菜单显示有Car菜单，实际无用。
+    【原因分析】界面显示有Car菜单
+    【解决方案】增加判断条件，判断Car菜单跳过显示
+    【修改模块】Settings
+    【影响模块】Settings
+    【测试建议】按照问题描述进行测试
+
+[Bug][REVIVE01A-S00A][Contacts]Log in to two Google Accounts --> View contacts of one account --> Bookmark one of contacts --> Contact count below is incorrect
+
+    【问题描述】登录两个Google账号-->查看其中一个账号的联系人-->收藏其中一个联系人-->下方联系人计数不正确
+    【原因分析】收藏联系人 导致计数错误
+    【解决方案】增加判断条件，判断上方联系人计数存在 则隐藏下方联系人计数
+    【修改模块】Contacts
+    【影响模块】Contacts
+    【测试建议】按照问题描述进行测试
+	
+[Bug 61253][REVIVE01A-S00A][Mms]Send a text message with an audio file attachment. The audio file play icon and progress bar are the same as the background color of the text message text box.
+
+    【问题描述】发送一个带音频文件附件的短信，音频文件播放图标与进度条显示与短信文本框背景颜色一致
+    【原因分析】背景颜色为蓝色导致
+    【解决方案】修改图标颜色为白色
+    【修改模块】Mms
+    【影响模块】Mms
+    【测试建议】按照问题描述进行测试
+	
+[Bug 61280][REVIVE01A-S00A][Mms]Create new MMS slides, add pictures, audio, video and other content, spontaneously receive, view conversation interface after receiving, slide interface, slide MMS display abnormal
+
+    【问题描述】新建彩信幻灯片，附件添加图片、音频、视频等内容，自发自收，接收后查看会话界面，滑动界面，幻灯片彩信显示异常 
+    【原因分析】幻灯片下方图片显示异常
+    【解决方案】去掉幻灯片彩信下方的图片
+    【修改模块】Mms
+    【影响模块】Mms
+    【测试建议】按照问题描述进行测试
+	
+	
+	
+问题分析模板：
+【原因分析】--文字要简单清晰，通俗易懂，描述不能有歧义
+【对比试验】--列明试验条件，方法，试验结果，结果解读
+【高通意见】--说明高通对该问题的分析
+【研发意见】--研发给出该问题的修改意见，如不修改请选择如下原因：
+1、硬件限制； 
+2、与Android默认设计一致，注明Android版本；
+3、与客户对比机表现一致，注明对比机型号； 
+7、与高通QRD机器表现一致； 
+4、与客户需求冲突，注明客户需求条目； 
+5、与CTS冲突，注明CTS具体测试项；
+6、不影响用户体验，修改工作量较大，且容易引入系统不稳定性，注明开发工作量预估；
+8、对比效果与同类产品一致或略优，注明对比测试结果；
+
+
+    private FavoritesAndContactsLoader mFavoritesAndContactsLoader;
+//        contactCount = contactCount - mFavoritesAndContactsLoader.getFavoritesContacts();
+mFavoritesAndContactsLoader = new FavoritesAndContactsLoader(context);
+        return mFavoritesAndContactsLoader;
+		
+    public int getFavoritesContacts() {
+        if (mLoadFavorites) {
+            return loadFavoritesContacts().getCount();
+        }
+        return 0;
+    }
+	
+	
+[Bug][REVIVE01A-S00A][Contacts]Contact count display is abnormal while searching for contacts && Count does not appear when the contact category is customize
+
+    【问题描述】搜索联系人时联系人计数显示异常&&联系人类别为customize时不显示计数
+    【原因分析】搜索联系人时不显示计数
+    【解决方案】搜索联系人时不显示计数
+    【修改模块】Contacts
+    【影响模块】Contacts
+    【测试建议】按照问题描述进行测试
+	
+	
+[Bug 61414][REVIVE01A-S00A][Mms]When the tester sends a message containing URLs, phone numbers, and email address links, the URL, phone number, and email address are not easily visible
+
+    【问题描述】测试机发送包含网址、电话号码、邮箱地址链接的信息时网址、电话号码、邮箱地址字体显示灰色不易看清
+    【原因分析】修改超链接字体颜色
+    【解决方案】修改超链接字体颜色
+    【修改模块】Mms
+    【影响模块】Mms
+    【测试建议】按照问题描述进行测试
+	
+	
+[Bug 60197][REVIVE01A-S00A][Contacts]There is a contact number; enter the contact, click the search icon, the probability appears in the lower right corner of a row of red spots
+
+    【问题描述】存在联系人号码；进入联系人，点击搜索图标，概率出现右下角闪现一排红点
+    【原因分析】点击搜索图标时 同时调用输入法和FloatingActionButton消失动画导致
+    【解决方案】在点击搜索图标时 直接设置FloatingActionButton为不可见，不调用该消失动画
+    【修改模块】Contacts
+    【影响模块】Contacts
+    【测试建议】按照问题描述进行测试
+	
+
+[Bug 60871][REVIVE02A-S01A][Contacts]Contact interface, click on the search icon, the same three contacts will flash at the bottom of the screen, and then pop up the virtual keyboard
+
+    【问题描述】联系人界面，点击搜索图标，屏幕下方会闪现三个同样联系人，再弹出虚拟键盘
+    【原因分析】点击搜索时重新加载联系人
+    【解决方案】在点击搜索时加载空的联系人
+    【修改模块】Contacts
+    【影响模块】Contacts
+    【测试建议】按照问题描述进行测试
+	
+[Bug 60943][REVIVE02A-S01A][Dialer]Click on a record with an avatar to enter the contact details interface, edit the avatar and save, return to the call history view, the picture has not been updated successfully
+
+    【问题描述】点击某一条带有头像的记录进入联系人详细界面，编辑头像后保存，返回到通话记录查看，头像没有更新成功
+    【原因分析】更换头像时未刷新头像
+    【解决方案】更改判断条件 刷新头像
+    【修改模块】Dialer
+    【影响模块】Dialer
+    【测试建议】按照问题描述进行测试
+	
+[Bug 61494][REVIVE02A-S01A][Mms]Create new information, select Add Video, Spontaneously receive, click MMS preview after receiving, video frame is stretched
+
+    【问题描述】新建信息，选择添加视频，自发自收，接收后点击彩信预览，视频画面被拉伸
+    【原因分析】VideoView未按原始视频比例播放
+    【解决方案】VideoView按原始视频比例播放
+    【修改模块】Mms
+    【影响模块】Mms
+    【测试建议】按照问题描述进行测试
+	
+	VideoView按原始视频比例播放
+	https://blog.csdn.net/jhl122/article/details/79686397
+	
+[Bug 61494][REVIVE02A-S01A][Mms]Create new information, select Add Video, Spontaneously receive, click MMS preview after receiving, video frame is stretched
+
+    【问题描述】新建信息，选择添加视频，自发自收，接收后点击彩信预览，视频画面被拉伸
+    【原因分析】点击视频画面会卡顿一下
+    【解决方案】去掉setOnVideoSizeChangedListener监听器
+    【修改模块】Mms
+    【影响模块】Mms
+    【测试建议】按照问题描述进行测试
+	
+[Bug 61770][REVIVE01A-S00A][Contacts]The contact A has 2 numbers 10010 and 10086, respectively, adding direct shortcuts, both shortcuts point to the number 10010
+
+    【问题描述】联系人A存有2个号码10010和10086，分别添加直接拨打快捷方式，两个快捷方式都指向号码1
+    【原因分析】id重复
+    【解决方案】id增加电话号码
+    【修改模块】Contacts
+    【影响模块】Contacts
+    【测试建议】按照问题描述进行测试
+	
+[Bug 61494][REVIVE02A-S01A][Mms]Create new information, select Add Video, Spontaneously receive, click MMS preview after receiving, video frame is stretched
+
+    【问题描述】新建信息，选择添加录制视频，自发自收，接收后查看彩信附件预览，视频画面被拉伸，附截图
+    【原因分析】竖屏视频未按比例显示
+    【解决方案】竖屏视频按比例显示
+    【修改模块】Mms
+    【影响模块】Mms
+    【测试建议】按照问题描述进行测试	
+	
+	
+[Bug 59805][REVIVE01A-S00A][Settings]Enter the SIM card settings to turn off SIM card 2 or card 1 status bar still shows the signal icon, enter the data in use, the SIM card data is still turned off (63.65)
+
+    【问题描述】进入SIM卡设置关闭SIM卡2或卡1状态栏上仍然会显示信号图标，进入数据使用中，被关闭的SIM卡数据仍然为开启状态（63.65）
+    【原因分析】未对SIM卡数据进行判断；对比A32F状态栏显示信号图标显示正常
+    【解决方案】判断当前SIM卡是否开启，并加载该SIM卡数据
+    【修改模块】Settings
+    【影响模块】Settings
+    【测试建议】按照问题描述进行测试	
+	
+	
+[Bug 61928][REVIVE01A-S00A][Contacts]Already logged into Google account, enter the left menu of contacts, add or click on any Labels, add more than 5 contacts, click the menu in the upper right corner - remove contact, quickly click on the X icon on the right side of the contact, the phone is abnormal
+    【问题描述】已登录谷歌账户，进入联系人左侧菜单，新增或点击任意Labels,添加5个以上联系人，点击右上角菜单-移除联系人，快速点击联系人右侧X图标，手机异常
+    【原因分析】1、空指针异常；2、Toast反复显示导致异常
+    【解决方案】1、trycatch空指针异常 2、优化Toast显示
+    【修改模块】Contacts
+    【影响模块】Contacts
+    【测试建议】按照问题描述进行测试
+	
+	
+[feature][REVIVE01A][vendor]APN parameters update for overseas countries Burkina Faso, Mali and Russia
+
+    【需求描述】海外国家布基纳法索、马里、俄罗斯的APN参数更新
+    【原因分析】更新APN参数
+    【解决方案】更新APN参数
+    【修改模块】vendor
+    【影响模块】vendor
+    【测试建议】对比APN参数
+	
+[India][Function][messages] SIM1 messages centre number is slightely down from the header side.
+
+    【需求描述】SIM1消息中心号码从头侧稍微向下。
+    【原因分析】布局多了一层PreferenceCategory导致
+    【解决方案】去掉PreferenceCategory
+    【修改模块】Mms
+    【影响模块】Mms
+    【测试建议】按照问题描述进行测试
+	
+[Bug 734][REVIVE02A-S01A][Contacts]Set the font to large or large, the SIM card capacity display is incomplete
+
+    【问题描述】设置字体为large或者largest下，SIM卡容量界面显示不全
+    【原因分析】SIM卡容量界面宽度受限
+    【解决方案】宽度设置为wrap_content
+    【修改模块】Contacts
+    【影响模块】Contacts
+    【测试建议】按照问题描述进行测试	
+	
+	
+[Bug 746][REVIVE02A-S01A][Contacts]If the font is large or large, the interface appearing after the "import" option is set to the contact is incomplete and not well-arranged.
+
+    【问题描述】字体为large或者largest下，联系人设置“import”选项后出现的界面显示不全且排列不美观
+    【原因分析】界面高度受限
+    【解决方案】高度设置为wrap_content
+    【修改模块】Contacts
+    【影响模块】Contacts
+    【测试建议】按照问题描述进行测试
+
+[Bug 786][REVIVE01A-S00A][Mms]Common phrases in text message editing interface input box shows blank
+
+    【问题描述】短信中常用短语编辑界面输入框显示空白太多
+    【原因分析】EditText'设置行数为5
+    【解决方案】去掉该属性
+    【修改模块】Mms
+    【影响模块】Mms
+    【测试建议】按照问题描述进行测试	
+	
+43696 [India][Function][Message]Not able to save url as bookmark
+
+[India 43696][Function][messages] Not able to save url as bookmark
+
+    【需求描述】无法将网址保存为书签
+    【原因分析】无相应的浏览器去添加书签
+    【解决方案】去掉该选项
+    【修改模块】Mms
+    【影响模块】Mms
+    【测试建议】按照问题描述进行测试
+	
+[India 43696][Function][messages] Not able to save url as bookmark
+
+    【需求描述】无法将网址保存为书签
+    【原因分析】无相应的浏览器去添加书签
+    【解决方案】去掉该选项
+    【修改模块】Mms
+    【影响模块】Mms
+    【测试建议】按照问题描述进行测试
+	
+	
+Bug 62071 - [REVIVEO01A-S10A][信息]设置为俄罗斯语，新建信息，选择添加多个收件人，在联系人选择列表无法区分联系人
+[Bug 62071][REVIVE01A-S00A][Mms]Set to Russian, create a new message, select Add multiple recipients, and the contact selection list cannot distinguish contacts
+
+    【问题描述】设置为俄罗斯语，新建信息，选择添加多个收件人，在联系人选择列表无法区分联系人
+    【原因分析】控件太多，空间太少
+    【解决方案】去掉labelView
+    【修改模块】Mms
+    【影响模块】Mms
+    【测试建议】按照问题描述进行测试	
+	
+Bug 62115 - 【REVIVEO01A-S10A】【信息】设置语言为俄罗斯语，新建信息添加附件，界面显示不美观.
+[Bug 62115][【REVIVEO01A-S10A][Mms]Set the language to Russian, add new information, add attachments, and the interface is not beautiful.
+
+    【问题描述】设置语言为俄罗斯语，新建信息添加附件，界面显示不美观.
+    【原因分析】修改资源文件
+    【解决方案】修改资源文件
+    【修改模块】Mms
+    【影响模块】Mms
+    【测试建议】按照问题描述进行测试
+	
+43703 [India][Function][Language][Strings] Wrong tethering string in Hindi in Hotspot & tethering settings.
+[India 43703][Function][Language] Wrong tethering string in Hindi in Hotspot & tethering settings.
+
+    【需求描述】在Hotspot＆tethering设置中，印度文错误地绑定字符串。
+    【原因分析】修改资源文件
+    【解决方案】修改资源文件
+    【修改模块】Mms
+    【影响模块】Mms
+    【测试建议】按照问题描述进行测试
+
+Bug 62173 - [REVIVE01A-S00A][联系人]进入联系人，点击搜索，输入任意字符，若存在联系人，此时点击删除按钮或搜索结果不存在联系人，搜索界面一直显示Searching。	
+[Bug 62173][REVIVE01A-S00A][Contacts]Enter the contact, click search, enter any character, if there is a contact, then click the delete button or the search result does not exist contact, the search interface shows Searching.
+
+    【问题描述】进入联系人，点击搜索，输入任意字符，若存在联系人，此时点击删除按钮或搜索结果不存在联系人，搜索界面一直显示Searching。
+    【原因分析】登录Exchange账号，会搜索特殊字符
+    【解决方案】搜索完后显示为空
+    【修改模块】Contacts
+    【影响模块】Contacts
+    【测试建议】按照问题描述进行测试
+	
+Bug 62155 - [REVIVE01A-S01A][信息]编辑超过10条信息内容的MMS，发出后，长按信息内容，选择保存附件，提示保存附件后，实际文件管理中无此附件。
+[Bug 62155][REVIVE01A-S00A][Mms]Enter the contact, click search, enter any character, if there is a contact, then click the delete button or the search result does not exist contact, the search interface shows Searching.
+
+    【问题描述】编辑超过10条信息内容的MMS，发出后，长按信息内容，选择保存附件，提示保存附件后，实际文件管理中无此附件。
+    【原因分析】当超过10条信息内容时转为Mms时提示有保存附件选项
+    【解决方案】当信息中只有文字时，就提示不能保存附件
+    【修改模块】Mms
+    【影响模块】Mms
+    【测试建议】按照问题描述进行测试
+	
+43882 [Overseas][Tanzania] Message APP display inconsistency information when message fail to be sent
+[Bug 43882][REVIVE01A-S00A][Mms]Message APP display inconsistency information when message fail to be sent
+
+    【问题描述】消息失败时，消息APP显示不一致信息
+    【原因分析】资源文件不同
+    【解决方案】修改字符串
+    【修改模块】Mms
+    【影响模块】Mms
+    【测试建议】按照问题描述进行测试
+	
+Bug 62257 - [REVIVEO01A-S11A][联系人]语言切换为阿拉伯语，进入联系人-左侧栏-SIM capacity，显示异常，界面重叠。	
+[Bug 62257][REVIVEO01A-S11A][Contacts]The language is switched to Arabic, enter the contact - left column - SIM capacity, abnormal display, interface overlap.
+
+    【问题描述】语言切换为阿拉伯语，进入联系人-左侧栏-SIM capacity，显示异常，界面重叠。
+    【原因分析】资源文件配置问题
+    【解决方案】修改资源文件right/left --> start/ end
+    【修改模块】Contacts
+    【影响模块】Contacts
+    【测试建议】按照问题描述进行测试
+	
+
+[feature][REVIVEO01A-S01A][Mms]SDK targetSdkVersion must >= 26
+
+【问题描述】SDK目标版本过低
+【原因分析】gts要求
+【解决方案】修改了sdk目标版本
+【修改模块】Contacts
+【影响模块】Contacts
+【测试建议】按原测试步骤测试。
+
+[feature][REVIVEO01A-S01A][Mms]SDK targetSdkVersion must >= 26
+
+	【问题描述】开机手机Messages报停
+	【原因分析】SDK=26的应用不允许其创建后台服务的情况下使用 startService() 函数
+	【解决方案】设置为前台服务
+	【修改模块】Mms
+	【影响模块】Mms
+	【测试建议】按原测试步骤测试。	
+	
+Bug 62334 - [REVIVEO01A-S11A][信息]新建信息，输入收件人号码，点击添加附件，选择Import Template，提示信息应用报停	
+[Bug 62334][REVIVEO01A-S11A][Mms]Create a new message, enter the recipient's number, click Add attachment, select Import Template, and prompt message application stop
+
+    【问题描述】新建信息，输入收件人号码，点击添加附件，选择Import Template，提示信息应用报停	
+    【原因分析】java.lang.SecurityException: MODE_WORLD_WRITEABLE no longer supported
+    【解决方案】MODE_WORLD_WRITEABLE --> MODE_PRIVATE
+    【修改模块】Mms
+    【影响模块】Mms
+    【测试建议】按照问题描述进行测试
+	
+	
+
+[Bug 62333][REVIVEO01A-S01A][MMS]MMS has no pop-up alert
+
+	【问题描述】手机接收到信息时，无任何提示。1）.角标不显示未读数;2).铃声+振动无作用 ；3）状态栏无通知。（必现）
+	【原因分析】SDK=26时通知未适配
+	【解决方案】适配创建通知,将重要性设置为HIGH
+	【修改模块】Mms
+	【影响模块】Mms
+	【测试建议】按原路径测试
+	
+Bug 62266 - 【REVIVEO01A-S11A】【信息&通话设置】乌克兰语（Ukrainian）Українськa语言下，信息默认应用设置和通话设置界面显示不美观.	
+[Bug 62266][REVIVEO01A-S11A][Mms]In the Ukrainian (Ukrainian) Українськa language, the information default application settings and call settings interface display unsightly.
+
+    【问题描述】乌克兰语（Ukrainian）Українськa语言下，信息默认应用设置和通话设置界面显示不美观.	
+    【原因分析】Message显示过长导致Default显示不出来
+    【解决方案】界面按比例显示
+    【修改模块】packages/apps/Settings/res/layout/app_preference_item.xml
+    【影响模块】Settings
+    【测试建议】按照问题描述进行测试
+	
+Bug 62261 - [REVIVEO01A-S11A][联系人]索马里语下，点击任意联系人-更多-Create shortcut，界面显示异常，见附件	
+[Bug 62261][REVIVEO01A-S01A][Launcher3]In Somali, click on any contact - More - Create shortcut, the interface shows an exception, see the attachment
+
+	【问题描述】索马里语下，点击任意联系人-更多-Create shortcut，界面显示异常，见附件
+	【原因分析】靠左对齐
+	【解决方案】增加android:gravity="start"
+	【修改模块】Launcher3
+	【影响模块】Launcher3
+	【测试建议】按原路径测试
+	
+Bug 62514 - [REVIVE01A-S00A][短信]手机发送一条短信，进入该会话，长按已发送短信，短信被selected,但是不易区分是否被标选。
+[Bug 62514][REVIVE01A-S00A][Mms]The mobile phone sends a text message to enter the session, long presses the sent short message, and the short message is selected, but it is not easy to distinguish whether it is selected.
+
+    【问题描述】手机发送一条短信，进入该会话，长按已发送短信，短信被selected,但是不易区分是否被标选。
+    【原因分析】修改选中后的颜色
+    【解决方案】修改选中后的颜色
+    【修改模块】packages/apps/Mms/res/values/colors.xml
+    【影响模块】packages/apps/Mms/res/values/colors.xml
+    【测试建议】按照问题描述进行测试
+	
+	
+43883 [Overseas] [Tanzania] Cannot save/copy some messages from phone to sim card (messages from institutions, banks, operators)
+[Bug 62514][REVIVE01A-S00A][Mms]Cannot save/copy some messages from phone to sim card (messages from institutions, banks, operators)
+
+    【问题描述】无法将某些消息从手机保存/复制到SIM卡（来自机构，银行，运营商的消息）
+    【原因分析】某些消息的手机号为字母
+    【解决方案】去掉相关判断
+    【修改模块】packages/apps/Mms/src/com/android/mms/ui/MessageUtils.java
+    【影响模块】packages/apps/Mms/src/com/android/mms/ui/MessageUtils.java
+    【测试建议】按照问题描述进行测试
+	
+[bug 43871][REVIVEO01A-S01A][Settings]Both Sim 1 & 2 switch on simultaneoulsy in data usage when changing cellular data by turning off one slot in sim card
+    
+	【问题描述】当通过关闭SIM卡中的一个插槽来改变蜂窝数据时，Sim 1和2都同时打开数据使用
+	【原因分析】安卓默认设计
+	【解决方案】与客户协商去掉这个菜单
+	【修改模块】Settings
+	【影响模块】Settings
+	【测试建议】进入对应菜单无此菜单
+	
+	
+【A22-pro】【联系人】【5/5】SIM卡满存后，在添加一个联系人提示could't save contact changes
+[Bug 2186][REVIVE02A-S01A][Contacts]After the SIM card is full, add a contact prompt could't save contact changes
+
+    【问题描述】SIM卡满存后，在添加一个联系人提示could't save contact changes
+    【原因分析】翻译问题
+    【解决方案】修改为could't save contact's changes
+    【修改模块】packages/apps/Contacts/res/values/strings.xml
+    【影响模块】packages/apps/Contacts/res/values/strings.xml
+    【测试建议】按照问题描述进行测试
+	
+45654 [Overseas][Mozambique] Desorganized words in Messages
+[bug 45654][REVIVEO01A-S01A][Settings]Desorganized words in Messages
+    
+	【问题描述】Menu-Messages-Options-settings- default messages
+	【原因分析】Phone display desorganized words
+	【解决方案】Default换行显示不美观，修改为短的字符串代替
+	【修改模块】packages/apps/Settings/res/values-pt-rPT/strings.xml
+	【影响模块】packages/apps/Settings/res/values-pt-rPT/strings.xml
+	【测试建议】进入对应菜单无此菜单
+	
+Bug 61732 - [REVIVE02A-S01A][系统设置]开启手机防盗，屏幕锁为图案/密码，拔卡锁屏与使用远程锁屏，密码输入界面布局不一致
+[Bug 61732][REVIVE02A-S01A][SystemUI]Turn on the phone anti-theft, the screen lock is the pattern/password, the card lock screen is used and the remote lock screen is used, and the password input interface layout is inconsistent.
+
+    【问题描述】开启手机防盗，屏幕锁为图案/密码，拔卡锁屏与使用远程锁屏，密码输入界面布局不一致
+    【原因分析】开启手机防盗，屏幕锁为图案/密码，拔卡锁屏与使用远程锁屏，密码输入界面布局不一致
+    【解决方案】布局设置定长定宽
+    【修改模块】frameworks/base/packages/SystemUI/res-keyguard/layout/mtk_keyguard_anti_theft_lock_view.xml
+    【影响模块】frameworks/base/packages/SystemUI/res-keyguard/layout/mtk_keyguard_anti_theft_lock_view.xml
+    【测试建议】按照问题描述进行测试
+
+Bug 62729 - [REVIVE01A-S00A][设置]已开启手机防盗，再次进入手机防盗，在密码输入界面，点击Recovery password，输入正确的密保答案，手机跳转到密码重置成功界面，此时键盘不会自动收起。	
+[Bug 62729][REVIVE01A-S00A][Settings]The mobile phone anti-theft has been turned on, and the mobile phone anti-theft has been entered again. In the password input interface, click Recovery password, enter the correct secret answer, and the mobile phone jumps to the password reset successful interface, and the keyboard will not be automatically folded up.
+
+    【问题描述】已开启手机防盗，再次进入手机防盗，在密码输入界面，点击Recovery password，输入正确的密保答案，手机跳转到密码重置成功界面，此时键盘不会自动收起。
+    【原因分析】点击DOWN隐藏键盘
+    【解决方案】点击DOWN隐藏键盘
+    【修改模块】packages/apps/Settings/src/com/android/settings/ppl/ui/RecoverActivity.java
+    【影响模块】packages/apps/Settings/src/com/android/settings/ppl/ui/RecoverActivity.java
+    【测试建议】按照问题描述进行测试
+	
+	
+[Bug 62729][REVIVE01A-S00A][Settings]When the soft keyboard is hidden, the above method is called and displayed again.
+
+    【问题描述】当软键盘已经隐藏了，调用上述方法后又将重新显示。
+    【原因分析】点击DOWN隐藏键盘
+    【解决方案】点击DOWN隐藏键盘
+    【修改模块】packages/apps/Settings/src/com/android/settings/ppl/ui/RecoverActivity.java
+    【影响模块】packages/apps/Settings/src/com/android/settings/ppl/ui/RecoverActivity.java
+    【测试建议】按照问题描述进行测试

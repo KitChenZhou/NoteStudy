@@ -1,0 +1,55 @@
+1、Android系统架构：
+
+	Linux内核层、系统运行库层、应用框架层、应用层
+	Android运行时库中包含了专为移动设备定制的Dalvik虚拟机，使得每个应用都可以运行在独立的进程中
+	
+2、活动的四种启动方式
+
+	standard：每次启动活动都会创建该活动的一个新的实例
+	
+	singleTop：启动活动时判断当前返回栈的栈顶是否是该活动，如果是则可以直接使用，不是就再创建一个新的实例
+	
+	singleTask：启动活动时判断当前返回栈是否存在该活动，如果是则可以直接使用，不是就再创建一个新的实例
+	
+	singleInstance：有一个单独的返回栈来管理活动，不管是来自哪个应用程序来访问这个活动都会公用一个返回栈
+	
+3、Android 定位属性
+
+	alignParentXXX ： 在父布局XX边
+	alignXXX： 边缘对齐
+	
+4、Fragment生命周期
+
+	onAttach()
+	onCreate()
+	onCreateView()
+	onActivityCreate()
+	onStart()
+	onResume()
+	碎片激活
+	onPause()
+	onStop()
+	onDestroyView()
+	onDestroy()
+	onDetach()
+	碎片销毁
+	
+4.2 动态添加碎片：
+
+	private void replaceFragment(Fragment fragment) {
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		FragmentTransaction transaction = fragmentManager.beginTransaction();
+		transaction.replace(R.id.xxx, fragment);
+		transaction.commit();
+	}
+
+	(1)创建待添加的碎片实例
+	(2)获取FragmentManager，在活动中可以直接通过调用getSupportFragmentManager()方法得到
+	(3)开启一个事务，通过调用beginTransaction()方法开启
+	(4)向容器内添加或替换碎片，一般使用replace()方法实现，需要传入容器的id和待添加的碎片实例
+	(5)提交事务，调用commit()方法来完成
+	
+	
+	
+
+	

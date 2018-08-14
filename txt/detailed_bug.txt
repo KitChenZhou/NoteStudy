@@ -1,0 +1,259 @@
+***[Bug 61770][REVIVE01A-S00A][Contacts]The contact A has 2 numbers 10010 and 10086, respectively, adding direct shortcuts, both shortcuts point to the number 10010
+    
+        【问题描述】联系人A存有2个号码10010和10086，分别添加直接拨打快捷方式，两个快捷方式都指向号码1
+        【原因分析】id重复
+        【解决方案】id增加电话号码
+        【修改模块】Contacts
+        【影响模块】Contacts
+        【测试建议】按照问题描述进行测试
+		
+if (BuildCompat.isAtLeastO()) {
+            compatAdaptiveIcon = IconCompat.createWithAdaptiveBitmap(icon);
+            final ShortcutManager sm = (ShortcutManager)
+                    mContext.getSystemService(Context.SHORTCUT_SERVICE);
+            final String id = shortcutAction + lookupKey + phoneNumber;//第二次添加id相同 导致
+            final DynamicShortcuts dynamicShortcuts = new DynamicShortcuts(mContext);
+            final ShortcutInfo shortcutInfo = dynamicShortcuts.getActionShortcutInfo(
+                    id, displayName, shortcutIntent, compatAdaptiveIcon.toIcon());
+            if (shortcutInfo != null) {
+                intent = sm.createShortcutResultIntent(shortcutInfo);
+            }
+        }
+		
+		
+***[Bug 61928][REVIVE01A-S00A][Contacts]Already logged into Google account, enter the left menu of contacts, add or click on any Labels, add more than 5 contacts, click the menu in the upper right corner - remove contact, quickly click on the X icon on the right side of the contact, the phone is abnormal
+        【问题描述】已登录谷歌账户，进入联系人左侧菜单，新增或点击任意Labels,添加5个以上联系人，点击右上角菜单-移除联系人，快速点击联系人右侧X图标，手机异常
+        【原因分析】1、空指针异常；2、Toast反复显示导致异常
+        【解决方案】1、trycatch空指针异常 2、优化Toast显示
+        【修改模块】Contacts
+        【影响模块】Contacts
+        【测试建议】按照问题描述进行测试
+		
+		
+	private void toast(Context context, int resId) {
+        if (resId >= 0) {
+            if (null != mToast) {
+                mToast.setText(resId);
+            } else {
+                mToast = Toast.makeText(context, resId, Toast.LENGTH_SHORT);
+            }
+            mToast.show();
+        }
+    }
+	
+	
+***[Bug 61494][REVIVE02A-S01A][Mms]Create new information, select Add Video, Spontaneously receive, click MMS preview after receiving, video frame is stretched
+    
+        【问题描述】新建信息，选择添加视频，自发自收，接收后点击彩信预览，视频画面被拉伸
+        【原因分析】VideoView未按原始视频比例播放
+        【解决方案】VideoView按原始视频比例播放
+        【修改模块】Mms
+        【影响模块】Mms
+        【测试建议】按照问题描述进行测试
+    
+    Change-Id: I346447bf0c834dc492f0c0baecaa34c463597ea7
+    (cherry picked from commit 8291a7f8dbed83256f1016e84080eac1cd59e526)
+
+------ LINUX/android/packages/apps/Mms/res/layout/mms_play_video_pic.xml ------
+index 6f3a14e..6248db5 100755
+@@ -33,7 +33,8 @@
+     android:orientation="vertical"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+-    android:id="@+id/mms_play_video_pic">
++    android:id="@+id/mms_play_video_pic"
++    android:background="@android:color/black">
+     <com.android.mms.ui.MMSVideoView
+         android:focusable="true"
+         android:clickable="true"
+@@ -41,6 +42,7 @@
+         android:scaleType="fitXY"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
++        android:layout_gravity="center"
+         android:id="@+id/mms_play_video"/>
+     <ImageView
+         android:layout_width="match_parent"
+
+--- LINUX/android/packages/apps/Mms/src/com/android/mms/ui/MMSVideoView.java ---
+old mode 100644
+new mode 100755
+index 13be177..5d7d85c
+@@ -49,10 +49,19 @@ public class MMSVideoView extends VideoView {
+         super(context, attrs, defStyle);
+     }
+ 
++    public void setMeasure(int width, int height) {
++        this.mVideoWidth = width;
++        this.mVideoHeight = height;
++    }
++
+     @Override
+     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+         int width = getDefaultSize(mVideoWidth, widthMeasureSpec);
+         int height = getDefaultSize(mVideoHeight, heightMeasureSpec);
++        if (this.mVideoWidth > 0 && this.mVideoHeight > 0) {
++            width = this.mVideoWidth;
++            height = this.mVideoHeight;
++        }
+         setMeasuredDimension(width, height);
+     }
+ }
+
+ LINUX/android/packages/apps/Mms/src/com/android/mms/ui/PlayVideoOrPicActivity.java 
+index 065285e..433b0e7 100755
+@@ -78,7 +78,7 @@ public class PlayVideoOrPicActivity extends Activity {
+     private static final int BUFFER_SIZE = 8000;
+ 
+     private ImageView mImage;
+-    private VideoView mVideo;
++    private MMSVideoView mVideo;
+     private ImageView mPlayVideoButton;
+     private VideoProgressBar mProgressBar;
+     private ViewGroup mVideoControllerLayout;
+@@ -114,7 +114,7 @@ public class PlayVideoOrPicActivity extends Activity {
+ 
+             }
+         });
+-        mVideo = (VideoView) this.findViewById(R.id.mms_play_video);
++        mVideo = (MMSVideoView) this.findViewById(R.id.mms_play_video);
+         mVideoControllerLayout = (ViewGroup) findViewById(R.id.video_controller_layout);
+         mProgressBar = (VideoProgressBar) this.findViewById(R.id.video_progress);
+         mVideoDuration = (TextView) findViewById(R.id.video_duration);
+@@ -154,6 +154,25 @@ public class PlayVideoOrPicActivity extends Activity {
+                 mVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                     @Override
+                     public void onPrepared(MediaPlayer mp) {
++                        mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
++                            @Override
++                            public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
++                                if (width == 0 || height ==0) {
++                                    return;
++                                }
++                                if (width > height) {
++                                    int screenWidth = getWindowManager().getDefaultDisplay().getWidth(); //获取屏幕宽度
++                                    int screenHeight = getWindowManager().getDefaultDisplay().getHeight(); //获取屏幕高度
++                                    float scale = (float) width / (float) height;
++                                    int videoHeight = (int) (screenWidth / scale);
++                                    if (videoHeight > screenHeight) {
++                                        videoHeight = screenHeight;
++                                    }
++                                    mVideo.setMeasure(screenWidth, videoHeight);
++                                    mVideo.requestLayout();
++                                }
++                            }
++                        });
+                         mVideoDuration.setText(MessageUtils.getDisplayTime(mVideo.getDuration()));
+                         playVideo();
+                     }
+					 
+29606712
+
+
+***[Bug 59978][REVIVE01A-S00A][Launcher3]Add a contact to the desktop shortcut, and repeatedly add the same contact to the desktop shortcut, which can be added repeatedly, and the desktop displays multiple shortcuts for the same contact.
+    
+        【问题描述】添加联系人到桌面快捷方式，重复添加同一联系人到桌面快捷方式，可以重复添加，且桌面显示多个相同联系人快捷方式。
+        【原因分析】添加快捷方式没有检查该联系人是否已经存在
+        【解决方案】在添加快捷方式之前检查该联系人是否已经存在
+        【修改模块】Launcher3
+        【影响模块】Launcher3
+        【测试建议】按照问题描述进行测试
+    
+    Change-Id: Ib1fe94e52d6a97dd73df1f63472acbf4d64c4837
+
+ LINUX/android/packages/apps/Launcher3/src/com/android/launcher3/InstallShortcutReceiver.java 
+old mode 100644
+new mode 100755
+index 0370777..08803d4
+@@ -631,7 +631,10 @@ public class InstallShortcutReceiver extends BroadcastReceiver {
+                 }
+ 
+                 // Generate a shortcut info to add into the model
+-                installQueue.add(pendingInfo.getItemInfo());
++                boolean exist = LauncherModel.shortcutExists(mContext, pendingInfo.label, pendingInfo.launchIntent);
++                if (!exist) {
++                    installQueue.add(pendingInfo.getItemInfo());
++                }
+             }
+             return installQueue;
+         }
+
+ LINUX/android/packages/apps/Launcher3/src/com/android/launcher3/LauncherModel.java 
+old mode 100644
+new mode 100755
+index f871625..0afd89b
+@@ -25,6 +25,7 @@ import android.content.Context;
+ import android.content.Intent;
+ import android.content.IntentFilter;
+ import android.content.pm.LauncherActivityInfo;
++import android.database.Cursor;
+ import android.net.Uri;
+ import android.os.Handler;
+ import android.os.HandlerThread;
+@@ -692,4 +693,41 @@ public class LauncherModel extends BroadcastReceiver
+     public static void setWorkerPriority(final int priority) {
+         Process.setThreadPriority(sWorkerThread.getThreadId(), priority);
+     }
++
++    /**
++     * Returns true if the shortcuts already exists in the database.
++     * we identify a shortcut by its title and intent.
++     */
++    static boolean shortcutExists(Context context, String title, Intent intent) {
++        /**
++         * M: When installShortcut, Launcher add flags Intent.FLAG_ACTIVITY_NEW_TASK |
++         * Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED shortcut intent cannot match with intent saved in launcher, so create
++         * shortcut repeated.
++         * [ALPS00833799] Set FLAG_ACTIVITY_NEW_TASK and FLAG_ACTIVITY_RESET_TASK_IF_NEEDED for shortcut
++         * if action equals ACTION_MAIN and categroy contains CATEGORY_LAUNCHER.@{
++         */
++        if (intent.getAction() != null &&
++                intent.getCategories() != null &&
++                intent.getAction().equals(Intent.ACTION_MAIN) &&
++                intent.getCategories().contains(Intent.CATEGORY_LAUNCHER)) {
++            intent.addFlags(
++                    Intent.FLAG_ACTIVITY_NEW_TASK |
++                            Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
++        }
++        /**@}**/
++        boolean result = false;
++        if (title != null && intent != null) {
++            final ContentResolver cr = context.getContentResolver();
++            Cursor c = cr.query(LauncherSettings.Favorites.CONTENT_URI,
++                    new String[]{"title", "intent"}, "title=? and intent=?",
++                    new String[]{title, intent.toUri(0)}, null);
++            try {
++                result = c.moveToFirst();
++            } finally {
++                c.close();
++            }
++        }
++        return result;
++    }
++
+ }
+ 
+ 
+ ***[Bug 62729][REVIVE01A-S00A][Settings]The mobile phone anti-theft has been turned on, and the mobile phone anti-theft has been entered again. In the password input interface, click Recovery password, enter the correct secret answer, and the mobile phone jumps to the password reset successful interface, and the keyboard will not be automatically folded up.
+
+    【问题描述】已开启手机防盗，再次进入手机防盗，在密码输入界面，点击Recovery password，输入正确的密保答案，手机跳转到密码重置成功界面，此时键盘不会自动收起。
+    【原因分析】点击DOWN隐藏键盘
+    【解决方案】点击DOWN隐藏键盘
+    【修改模块】packages/apps/Settings/src/com/android/settings/ppl/ui/RecoverActivity.java
+    【影响模块】packages/apps/Settings/src/com/android/settings/ppl/ui/RecoverActivity.java
+    【测试建议】按照问题描述进行测试
+ -    private void hideKeyboard() {
+-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+-        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
++    private void hideKeyboard(EditText editText) {
++        InputMethodManager imm= (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
++        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+     }
+ 
+     protected void onButtonClicked() {
+@@ -208,7 +208,7 @@ public class RecoverActivity extends PplBasicActivity implements PplRelativeLayo
+ 
+                 }
+             }
+-            hideKeyboard();
++            hideKeyboard(mFirstPassword);
