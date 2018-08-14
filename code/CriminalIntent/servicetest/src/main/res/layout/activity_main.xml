@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.d22395.android.servicetest.MainActivity">
+
+    <Button
+        android:id="@+id/startservice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="start service"/>
+    <Button
+        android:id="@+id/stopservice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="stop service"/>
+    <Button
+        android:id="@+id/bindservice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="bind service"/>
+    <Button
+        android:id="@+id/unbindservice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="unbind service"/>
+
+</LinearLayout>
