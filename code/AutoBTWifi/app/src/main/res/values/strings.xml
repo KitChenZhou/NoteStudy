@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">AutoBTWiFi</string>
+
+    <string name="BT_switch_space_time">时间间隔(s):</string>
+    <string name="input_BT_switch_space_time">请输入BT开关间隔时间</string>
+
+    <string name="BT_switch_times">测试次数:</string>
+    <string name="input_BT_switch_times">请输入BT开关次数</string>
+
+    <string name="wifi_switch_space_time">时间间隔(s):</string>
+    <string name="input_wifi_switch_space_time">请输入WiFi开关间隔时间</string>
+
+    <string name="wifi_switch_times">测试次数:</string>
+    <string name="input_wifi_switch_times">请输入WiFi开关次数</string>
+
+
+    <string name="start_btn">开始</string>
+    <string name="stop_btn">停止</string>
+    <string name="bt">BT</string>
+    <string name="get_report">获取报告</string>
+    <string name="wifi_test_times">Wi-Fi测试的次数</string>
+    <string name="wifi">WiFi</string>
+    <string name="bt_test_times">BT测试的次数</string>
+
+
+</resources>

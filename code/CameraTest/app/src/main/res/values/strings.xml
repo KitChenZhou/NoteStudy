@@ -1,0 +1,34 @@
+<resources>
+    <string name="ct_app_name">Camera Test</string>
+
+    <!-- add for BlueToothTest-->
+    <string name="ct_switch_space_time">时间间隔(s):</string>
+    <string name="ct_switch_times">测试次数:</string>
+
+    <string name="ct_start_btn">开始</string>
+    <string name="ct_stop_btn">停止</string>
+    <string name="ct_enter_correct_parameters">请输入正确的参数！</string>
+    <string name="ct_notice">提示!</string>
+    <string name="ct_start_again">正在反复开/关Camera压力测试，是否重新开始</string>
+    <string name="ct_confirm">确认</string>
+    <string name="ct_show_restart_test">重新开始Camera压力测试</string>
+    <string name="ct_cancle">取消</string>
+    <string name="ct_stop_test">已停止Camera压力测试</string>
+    <string name="ct_not_start_test">未开始Camera压力测试</string>
+    <string name="ct_close_bluetooth_first">请先关闭Camera状态！</string>
+    <string name="ct_show_times_test">Camera测试的次数</string>
+    <string name="ct_report_test">Camera测试报告</string>
+    <string name="ct_successes_times">成功测试次数：</string>
+    <string name="ct_failures_times">失败测试次数：</string>
+    <string name="ct_all_times">总计测试次数：</string>
+    <string name="ct_successes_rate">      成功率      ：</string>
+    <string name="ct_percentage">%</string>
+    <string name="ct_stop_test_first">请先停止Camera测试！</string>
+    <string name="ct_completed">已完成</string>
+    <string name="ct_camera_test_times">Camera测试</string>
+    <string name="ct_test_completed">测试已完成！</string>
+    <string name="ct_get_camera_permission">已获取Camera权限</string>
+    <string name="ct_refuse_camera_permission">已拒绝Camera权限</string>
+    <string name="ct_click_twice_quit">再按一次退出Camera Test</string>
+
+</resources>

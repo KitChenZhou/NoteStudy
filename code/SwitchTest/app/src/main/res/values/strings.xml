@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">SwitchTest</string>
+    <string name="web_test">网页打开测试</string>
+    <string name="ontest">正在测试请稍后</string>
+    <string name="webtest">开始网页测试</string>
+    <string name="datatest">打开WiFi开关</string>
+    <string name="test">输入测试参数</string>
+    <string name="dataon">打开数据开关</string>
+    <string name="dataoff">关闭数据开关</string>
+    <string name="inputurl">请输入网址</string>
+    <string name="inputinter">请输入测试间隔(单位为妙)</string>
+    <string name="inputcount">请输入测试次数</string>
+    <string name="done">确定</string>
+    <string name="cancle">取消</string>
+    <string name="warning">请输入有效的网址</string>
+    <string name="web">网页测试</string>
+    <string name="airplane">飞行模式</string>
+    <string name="data">数据开关</string>
+    <string name="report">报告</string>
+    <string name="waringinput">请检查你的输入!!!!</string>
+    <string name="errorinfo">不具备测试条件请检查</string>
+    <string name="geturl">请输入测试的网址</string>
+    <string name="inter">时间间隔</string>
+    <string name="on">停留时间</string>
+    <string name="second">秒</string>
+    <string name="count">测试次数</string>
+    <string name="delay">超时时间</string>
+    <string name="airplanedialogtitle">正在进行飞行模式开关测试请等待</string>
+    <string name="datadialogtitle">正在进行数据业务开关测试请等待</string>
+    <string name="urldialogtitle">正在进行打开网页测试请等待</string>
+    <string name="plzwaitting">请耐心等待</string>
+    <string name="airplaneison">目前飞行模式处于开启状态</string>
+    <string name="airplaneisoff">目前飞行模式处于关闭状态</string>
+    <string name="dataison">目前数据开关处于开启状态</string>
+    <string name="dataisoff">目前数据开关处于关闭状态</string>
+</resources>

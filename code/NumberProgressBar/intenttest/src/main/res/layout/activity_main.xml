@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/button1_browsePage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="browsePageClick"
+        android:text="打开指定网页"/>
+
+    <Button
+        android:id="@+id/button2_openDialPage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="openDialPageClick"
+        android:text="打开拨号面板"/>
+
+    <Button
+        android:id="@+id/button3_dialPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="dialPhoneClick"
+        android:text="直接拨打指定号码"/>
+
+    <Button
+        android:id="@+id/button4_openMsgPage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="openMsgPageClick"
+        android:text="打开发短信的界面"/>
+
+    <Button
+        android:id="@+id/button5_sendMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="sendMsgClick"
+        android:text="给指定的人发短信"/>
+
+    <Button
+        android:id="@+id/button6_playMusic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="playMusicClick"
+        android:text="播放指定路径音乐"/>
+
+    <Button
+        android:id="@+id/button7_uninstall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="uninstallClick"
+        android:text="卸载程序"/>
+
+    <Button
+        android:id="@+id/button8_install"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="installClick"
+        android:text="安装程序"/>
+
+
+</LinearLayout>

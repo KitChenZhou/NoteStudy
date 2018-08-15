@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/telephotono"
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:hint="请输入电话号码"
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="0dip"
+        android:inputType="number"
+        />
+    <EditText
+        android:id="@+id/space"
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:hint="请输入拨号间隔时间(s)"
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="0dip"
+        android:inputType="number"/>
+    <EditText
+        android:id="@+id/dialingTimes"
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:hint="请输入拨号的次数"
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="0dip"
+        android:inputType="number"/>
+    <Button
+        android:id="@+id/start"
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:text="开始"
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="0dip"
+        />
+    <Button
+        android:id="@+id/stop"
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:text="停止"
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="0dip"
+        />
+    <Button
+        android:id="@+id/connection"
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:text="呼通率"
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="0dip"
+        />
+
+</LinearLayout>

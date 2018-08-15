@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Crazy04.iml" filepath="$PROJECT_DIR$/Crazy04.iml" />
+      <module fileurl="file://$PROJECT_DIR$/alarmtest/alarmtest.iml" filepath="$PROJECT_DIR$/alarmtest/alarmtest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fragmentexample/fragmentexample.iml" filepath="$PROJECT_DIR$/fragmentexample/fragmentexample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/intentservicetest/intentservicetest.iml" filepath="$PROJECT_DIR$/intentservicetest/intentservicetest.iml" />
+    </modules>
+  </component>
+</project>

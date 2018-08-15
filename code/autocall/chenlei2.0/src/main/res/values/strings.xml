@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">AutoPhone</string>
+    <string name="phoneNo">电话号码:</string>
+    <string name="input_phoneNo">请输入电话号码</string>
+    <string name="space_time">拨号间隔(s):</string>
+    <string name="input_space_time">请输入拨号间隔时间(s)</string>
+    <string name="call_duration">通话时间(s):</string>
+    <string name="input_call_duration">请输入通话持续时间(s)</string>
+    <string name="input_call_times">请输入拨号的次数</string>
+    <string name="sleep_time">休眠时间(s):</string>
+    <string name="call_times">拨号次数:</string>
+    <string name="input_sleep_time">请输入休眠时间</string>
+    <string name="set_sleep_btn">设置休眠</string>
+    <string name="start_btn">开始</string>
+    <string name="stop_btn">停止</string>
+    <string name="show_call_times">拨打的次数</string>
+    <string name="get_reports_btn">获取报告</string>
+    <string name="export_file_btn">导出EXCEL文件</string>
+
+    <string-array name="sleep_time_choose">
+        <item>15秒</item>
+        <item>30秒</item>
+        <item>1分钟</item>
+        <item>2分钟</item>
+        <item>5分钟</item>
+        <item>10分钟</item>
+        <item>30分钟</item>
+    </string-array>
+</resources>

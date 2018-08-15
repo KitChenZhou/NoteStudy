@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Test2</string>
+    <string name="true_button">True</string>
+    <string name="false_button">False</string>
+    <string name="true_toast">yeah!correct</string>
+    <string name="false_toast">Sorry,incorrect</string>
+    <string name="prev_button">Prev</string>
+    <string name="next_button">Next</string>
+
+    <string name="warning_text">Are you sure you want to do this</string>
+    <string name="show_answer_button">Show answer</string>
+    <string name="cheat_button">Cheat!</string>
+    <string name="judgment_toast">Cheating is wrong.</string>
+
+    <string name="Question1">1、空气是一种看不见的、摸不着的物体</string>
+    <string name="Question2">2、昆虫是世界上种类和数量最多、分布最广的动物</string>
+    <string name="Question3">3、马铃薯是果实</string>
+    <string name="Question4">4、磁铁能吸引各种金属</string>
+    <string name="Question5">5、空气中的氧气是支持燃烧的</string>
+</resources>

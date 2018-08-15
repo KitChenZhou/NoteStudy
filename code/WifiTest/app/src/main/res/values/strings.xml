@@ -1,0 +1,36 @@
+<resources>
+    <string name="wt_app_name">Wifi Test</string>
+
+    <string name="wt_wifi_switch_space_time">时间间隔(s):</string>
+    <string name="wt_input_wifi_switch_space_time">请输入WiFi开关间隔时间</string>
+
+    <string name="wt_wifi_switch_times">测试次数:</string>
+    <string name="wt_input_wifi_switch_times">请输入WiFi开关次数</string>
+
+    <string name="wt_start_btn">开始</string>
+    <string name="wt_stop_btn">停止</string>
+    <string name="wt_wifi_test_times">Wi-Fi测试的次数</string>
+
+    <string name="wt_enter_correct_parameters">请输入正确的参数！</string>
+    <string name="wt_cant_support_bluetooth">手机不支持蓝牙功能！！</string>
+    <string name="wt_notice">提示!</string>
+    <string name="wt_start_again">正在反复开/关Wi-Fi压力测试，是否重新开始</string>
+    <string name="wt_confirm">确认</string>
+    <string name="wt_show_restart_test">重新开始Wi-Fi压力测试</string>
+    <string name="wt_cancle">取消</string>
+    <string name="wt_stop_bluetooth_test">停止Wi-Fi压力测试</string>
+    <string name="wt_show_not_start_test">未开始Wi-Fi压力测试</string>
+    <string name="wt_close_bluetooth_first">请先关闭Wi-Fi状态！</string>
+    <string name="wt_show_times_bluetooth_test">Wi-Fi测试的次数</string>
+    <string name="wt_report_bluetooth_test">Wi-Fi测试报告</string>
+    <string name="wt_No_">第</string>
+    <string name="wt_test_times">次测试</string>
+    <string name="wt_successes_times">成功测试次数：</string>
+    <string name="wt_failures_times">失败测试次数：</string>
+    <string name="wt_all_times">总计测试次数：</string>
+    <string name="wt_successes_rate">成功率      ：</string>
+    <string name="wt_percentage">%</string>
+    <string name="wt_test_finished">测试完成！</string>
+    <string name="wt_exit">再按一次退出Wi-Fi Test</string>
+
+</resources>
